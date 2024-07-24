@@ -1,66 +1,71 @@
 <script setup lang="ts">
-import { reactive } from "vue";
+import { reactive, ref } from "vue";
+import { loadFile } from '@/tools/file_utils.ts'
+import { parse_task } from '@/tools/parser.ts'
 
+import SubmitForm from "../components/SubmitForm.vue";
+
+
+const is_submit_form_show = ref<boolean>(false)
 const submission_status = ['submit', 'checked', 'awarded']
 const submission_status_color = ['#8b13e7', '#13e7c0', '#136fe7']
 
 const submission_list = reactive<{
+  title: string
   date: string,
   message: string,
   status: number,
   link: string
 }[]>([])
 
-submission_list.push({
-  date: "2024-02-23",
-  message: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere dolor maxime vitae veritatis ipsa expedita iure, consequuntur praesentium ad nulla quis! Autem dolorem odit quia ratione consequatur neque quod ad.",
-  status: 1,
-  link: ""
-})
-submission_list.push({
-  date: "2024-02-23",
-  message: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere dolor maxime vitae veritatis ipsa expedita iure, consequuntur praesentium ad nulla quis! Autem dolorem odit quia ratione consequatur neque quod ad.",
-  status: 0,
-  link: ""
-})
-submission_list.push({
-  date: "2024-02-23",
-  message: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere dolor maxime vitae veritatis ipsa expedita iure, consequuntur praesentium ad nulla quis! Autem dolorem odit quia ratione consequatur neque quod ad.",
-  status: 2,
-  link: ""
-})
+function load_data() {
+  let res = loadFile('./task')?.toString()
+  let task_list = parse_task(res);
+  console.log(task_list)
 
-submission_list.push({
-  date: "2024-02-23",
-  message: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere dolor maxime vitae veritatis ipsa expedita iure, consequuntur praesentium ad nulla quis! Autem dolorem odit quia ratione consequatur neque quod ad.",
-  status: 1,
-  link: ""
-})
-submission_list.push({
-  date: "2024-02-23",
-  message: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere dolor maxime vitae veritatis ipsa expedita iure, consequuntur praesentium ad nulla quis! Autem dolorem odit quia ratione consequatur neque quod ad.",
-  status: 0,
-  link: ""
-})
-submission_list.push({
-  date: "2024-02-23",
-  message: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere dolor maxime vitae veritatis ipsa expedita iure, consequuntur praesentium ad nulla quis! Autem dolorem odit quia ratione consequatur neque quod ad.",
-  status: 2,
-  link: ""
-})
+  task_list.forEach((task) => {
+    submission_list.push({
+      title: task.title,
+      date: task.date,
+      message: task.message,
+      status: 0,
+      link: task.link
+    })
+  })
+}
+load_data()
+
+function submit(submit_info: object) {
+  if (is_submit_form_show.value == true) {
+    if (submit_info.message == "" || submit_info.title == '' || submit_info.file_list.length < 1) {
+      alert('Nothing to submit! The form should be completed!')
+    } else {
+      // submit the data
+
+    }
+  }
+  is_submit_form_show.value = ! is_submit_form_show.value
+  console.log(is_submit_form_show.value, submit_info)
+}
+
 </script>
 
 <template>
   <div class="submission">
     <h1>This is an submission page</h1>
 
+    <submit-form :is_submit_form_show="is_submit_form_show" @submit="submit"></submit-form>
+
     <ul class="submission-content">
       <li class="submission-item" v-for="submission in submission_list" :key="submission.date">
         <div class="submission-func">
-          <div class="submission-status" :style="{'backgroundColor': submission_status_color[submission.status]}">
-            {{ submission_status[submission.status] }}
+          <a class="submission-title" target="_blank" :href="submission.link">{{ submission.title }}</a>
+          <div class="submission-func-container">
+            <div class="submission-date">{{ submission.date }}</div>
+            <div class="submission-status" :style="{'backgroundColor': submission_status_color[submission.status]}">
+              {{ submission_status[submission.status] }}
+            </div>
           </div>
-          <div class="submission-date">{{ submission.date }}</div>
         </div>
         <div class="submission-message">{{ submission.message }}</div>
       </li>
@@ -93,17 +98,29 @@ submission_list.push({
         display: flex;
         justify-content: space-between;
 
-        .submission-status {
-          padding: 2px 5px;
-          color: #fff;
-          border-radius: 3px;
+        .submission-title {
+          font-size: 17px;
+          font-weight: bold;
+          cursor: pointer;
         }
 
-        .submission-date {
-          text-align: right;
-          font-size: 13px;
-          color: #aaa;
+        .submission-func-container {
+          display: flex;
+
+          .submission-date {
+            text-align: right;
+            font-size: 13px;
+            color: #aaa;
+            margin-right: 20px;
+          }
+          
+          .submission-status {
+            padding: 2px 5px;
+            color: #fff;
+            border-radius: 3px;
+          }
         }
+
         
       }
 
