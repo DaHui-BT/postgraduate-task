@@ -19,7 +19,6 @@ function load_data() {
   if (res == null) return
 
   let task_list = parse_task(res);
-  console.log(task_list)
 
   task_list.forEach((task: SubmissionType) => {
     submission_list.push({

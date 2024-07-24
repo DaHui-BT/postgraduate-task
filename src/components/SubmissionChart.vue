@@ -1,5 +1,7 @@
 <script setup lang="ts">
 //@ts-nocheck
+import { loadFile } from '@/tools/file_utils';
+import { parse_task } from '@/tools/parser';
 import moment from 'moment'
 import { reactive, ref } from 'vue'
 
@@ -18,7 +20,6 @@ const profile = defineProps(['profile'])
 const monthCN = ['Jul', 'Aug', 'Sep',	'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul']
 
 function init () {
-  console.log(moment().format('YYYY-MM-DD'))
   // 上一年信息
   let prevYear = parseInt(moment().format('YYYY')) - 1
   let prevTodayFormatStr = prevYear + '-' + moment().format('MM-DD')
@@ -80,6 +81,17 @@ function init () {
 }
 
 function formatProblemData () {
+  let lines = loadFile('./task')
+  let task_list: SubmissionType[] = parse_task(lines)
+  for (let task of task_list) {
+    dateData.forEach(element => {
+      for (let e of element.data) {
+        if (e.date.slice(2, e.date.length) == task.date) {
+          e.number ++;
+        }
+      }
+    });
+  }
   let submissionRecord = {}
   // let OIProblems = rofile.oi_problems_status.problems || {}
   // // 格式化profile中oi的提交记录数据，创建submissionRecord对象，将create_time作为key进行存储
@@ -124,8 +136,8 @@ function sliderChange (val: []) {
 }
 
 (() =>  {
-  formatProblemData()
   init()
+  formatProblemData()
 })()
 
 </script>
