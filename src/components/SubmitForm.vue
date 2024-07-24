@@ -1,17 +1,13 @@
 <script setup lang="ts">
 import moment from "moment";
 import { reactive } from "vue";
+import type { SubmitType } from '@/types/submit'
 
 
 const emit = defineEmits(['submit'])
 const prop = defineProps(['is_submit_form_show'])
 
-const submit_info = reactive<{
-  date: string,
-  title: string,
-  message: string,
-  file_list: FormData[]
-}>({
+const submit_info = reactive<SubmitType>({
   date: moment().format('YYYY-MM-DD: HH-mm:ss'),
   title: '',
   message: '',
@@ -44,10 +40,10 @@ function uploadData (e: Event) {
 function submit() {
   alert('Please use git to submit!')
   return
-  emit('submit', submit_info)
-  submit_info.file_list = []
-  submit_info.message = ''
-  submit_info.title = ''
+  // emit('submit', submit_info)
+  // submit_info.file_list = []
+  // submit_info.message = ''
+  // submit_info.title = ''
 }
 
 </script>

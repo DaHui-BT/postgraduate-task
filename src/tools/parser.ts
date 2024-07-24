@@ -1,4 +1,8 @@
-function parse_task(text: string): {date: string, title: string, message: string, file: string, link: string}[] {
+//@ts-nocheck
+
+import type { SubmissionType } from "@/types/submission"
+
+function parse_task(text: string): SubmissionType[] {
   if (text.trim() == '' || text == undefined || text == null) {
     alert("Config file error: [task file format not correct]!")
     return

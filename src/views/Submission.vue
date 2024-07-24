@@ -1,41 +1,40 @@
 <script setup lang="ts">
 import { reactive, ref } from "vue";
-import { loadFile } from '@/tools/file_utils.ts'
-import { parse_task } from '@/tools/parser.ts'
+import { loadFile } from '@/tools/file_utils'
+import { parse_task } from '@/tools/parser'
+import type { SubmissionType } from '@/types/submission'
+import type { SubmitType } from "@/types/submit";
 
-import SubmitForm from "../components/SubmitForm.vue";
+import SubmitForm from "@/components/SubmitForm.vue";
 
 
 const is_submit_form_show = ref<boolean>(false)
 const submission_status = ['submit', 'checked', 'awarded']
 const submission_status_color = ['#8b13e7', '#13e7c0', '#136fe7']
 
-const submission_list = reactive<{
-  title: string
-  date: string,
-  message: string,
-  status: number,
-  link: string
-}[]>([])
+const submission_list = reactive<SubmissionType[]>([])
 
 function load_data() {
   let res = loadFile('./task')?.toString()
+  if (res == null) return
+
   let task_list = parse_task(res);
   console.log(task_list)
 
-  task_list.forEach((task) => {
+  task_list.forEach((task: SubmissionType) => {
     submission_list.push({
       title: task.title,
       date: task.date,
       message: task.message,
       status: 0,
+      file: task.file,
       link: task.link
     })
   })
 }
 load_data()
 
-function submit(submit_info: object) {
+function submit(submit_info: SubmitType) {
   if (is_submit_form_show.value == true) {
     if (submit_info.message == "" || submit_info.title == '' || submit_info.file_list.length < 1) {
       alert('Nothing to submit! The form should be completed!')

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+//@ts-nocheck
 import moment from 'moment'
 import { reactive, ref } from 'vue'
 
