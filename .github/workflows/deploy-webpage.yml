@@ -10,10 +10,12 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
 
+    - name: Build
+      run: npm install && npm run build-only
+
     - name: Build and Deploy
-      uses: JamesIves/github-pages-deploy-action@v4
+      uses: JamesIves/github-pages-deploy-action@v4.6.3
       env:
         ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-        BRANCH: main
-        FOLDER: docs
-        BUILD_SCRIPT: npm install && npm run build-only
+        branch: main
+        folder: docs
