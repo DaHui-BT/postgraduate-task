@@ -9,23 +9,26 @@ import SubmitForm from "@/components/SubmitForm.vue";
 
 
 const is_submit_form_show = ref<boolean>(false)
-const submission_status = ['submit', 'checked', 'awarded']
-const submission_status_color = ['#8b13e7', '#13e7c0', '#136fe7']
+const submission_status = ['submit', 'checked', 'awarded', 'failed']
+const submission_status_color = ['#895ef9fc', '#41d6ba', '#3ddf58', '#f95e85fc']
 
 const submission_list = reactive<SubmissionType[]>([])
 
 function load_data() {
+  const ans_text = loadFile('./submission.json')
+  const ans_list: number[] = eval('' + ans_text)
+
   let res = loadFile('./task')?.toString()
   if (res == null) return
 
   let task_list = parse_task(res);
 
-  task_list.forEach((task: SubmissionType) => {
+  task_list.forEach((task: SubmissionType, index: number) => {
     submission_list.push({
       title: task.title,
       date: task.date,
       message: task.message,
-      status: 2,
+      status: ans_list[index],
       file: task.file,
       link: task.link
     })
@@ -60,7 +63,8 @@ function submit(submit_info: SubmitType) {
           <a class="submission-title" target="_blank" :href="submission.link">{{ submission.title }}</a>
           <div class="submission-func-container">
             <div class="submission-date">{{ submission.date }}</div>
-            <div class="submission-status" :style="{'backgroundColor': submission_status_color[submission.status]}">
+            <div :class="{'submission-status': true, 'submission-status-error': submission.status == 3}"
+                 :style="{'backgroundColor': submission_status_color[submission.status]}">
               {{ submission_status[submission.status] }}
             </div>
           </div>
