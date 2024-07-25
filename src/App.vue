@@ -12,7 +12,7 @@ function to(path: string) {
 <template>
   <div class="app">
     <div class="wrapper">
-      <div class="nav-item" @click="to('/')">Home👍🛶🪿🥂👍🛶🦆🍻👌</div>
+      <div class="nav-item" @click="to('/')">👍🛶🪿🥂👍🛶🦆🍻👌Home</div>
       <div class="nav-item" @click="to('/submission')">Submission</div>
     </div>
     <div class="wrapper-place"></div>
