@@ -21,5 +21,11 @@ message=Advanced Mathematics 30 pages
 file=math-30-notes.jpg
 file=math-30-pages.jpg
 
+[math teaching material]
+date=24-07-25
+message=Probablitiy 8 pages
+file=mathProbability-8-notes.jpg
+file=mathProbability-8-pages.jpg
+
 # write the task above end
 [end]
