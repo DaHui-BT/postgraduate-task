@@ -11,9 +11,15 @@ file=26words.jpg
 
 [math teaching material]
 date=24-07-25
-message=supplementary Advanced Mathematics ten pages
+message=supplementary Advanced Mathematics 20 pages
 file=math notes.jpg
 file=teaching material.jpg
+
+[math teaching material]
+date=24-07-25
+message=Advanced Mathematics 30 pages
+file=math-30-notes.jpg
+file=math-30-pages.jpg
 
 # write the task above end
 [end]
