@@ -1,8 +1,8 @@
 //@ts-nocheck
 
-import type { SubmissionType } from "@/types/submission"
+import type { TaskType } from "@/types/submission"
 
-function parse_task(text: string): SubmissionType[] {
+function parse_task(text: string): TaskType[] {
   if (text.trim() == '' || text == undefined || text == null) {
     alert("Config file error: [task file format not correct]!")
     return

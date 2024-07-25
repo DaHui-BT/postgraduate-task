@@ -1,4 +1,4 @@
-interface SubmissionType {
+interface TaskType {
   date: string,
   title: string,
   message: string,
@@ -7,4 +7,9 @@ interface SubmissionType {
   link: string
 }
 
-export { type SubmissionType }
+interface SubmissionType {
+  id: string,
+  info: TaskType[]
+}
+
+export { type SubmissionType, TaskType }

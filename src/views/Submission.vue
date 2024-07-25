@@ -2,7 +2,7 @@
 import { reactive, ref } from "vue";
 import { loadFile } from '@/tools/file_utils'
 import { parse_task } from '@/tools/parser'
-import type { SubmissionType } from '@/types/submission'
+import type { SubmissionType, TaskType } from '@/types/submission'
 import type { SubmitType } from "@/types/submit";
 
 import SubmitForm from "@/components/SubmitForm.vue";
@@ -23,18 +23,58 @@ function load_data() {
 
   let task_list = parse_task(res);
 
-  task_list.forEach((task: SubmissionType, index: number) => {
-    submission_list.push({
-      title: task.title,
-      date: task.date,
-      message: task.message,
-      status: ans_list[index] | 0,
-      file: task.file,
-      link: task.link
-    })
+  task_list.forEach((task: TaskType, index: number) => {
+    let submission_index = -1
+
+    for (let i = 0; i < submission_list.length; ++ i) {
+      if (submission_list[i].id == task.date) {
+        submission_index = i
+        break
+      }
+    }
+    if (submission_index == -1) {
+      submission_list.push({
+        id: task.date,
+        info: [{
+          date: task.date,
+          title: task.title,
+          message: task.message,
+          file: task.file,
+          status: ans_list[index] | 0,
+          link: task.link
+        }]
+      })
+    } else {
+      submission_list[submission_index].info.push({
+        date: task.date,
+        title: task.title,
+        message: task.message,
+        file: task.file,
+        status: ans_list[index] | 0,
+        link: task.link
+      })
+    }
   })
+
+  submission_list.sort((s1, s2) => -s1.id.localeCompare(s2.id))
 }
 load_data()
+
+function toggle(event: any) {
+  if (event.target.parentNode.nextElementSibling.style.display == 'none') {
+    event.target.parentNode.nextElementSibling.style.display = 'block'
+  } else {
+    event.target.parentNode.nextElementSibling.style.display = 'none'
+  }
+}
+
+function calNumber(info: TaskType[], v: number) {
+  let number = 0;
+  for (let i of info) {
+    if (i.status >= v) number ++
+  }
+  return number
+}
 
 function submit(submit_info: SubmitType) {
   if (is_submit_form_show.value == true) {
@@ -58,22 +98,36 @@ function submit(submit_info: SubmitType) {
     <submit-form :is_submit_form_show="is_submit_form_show" @submit="submit"></submit-form>
 
     <ul class="submission-content">
-      <li class="submission-item" v-for="submission in submission_list" :key="submission.date">
-        <div class="submission-func">
-          <div class="submission-title">{{ submission.title }}</div>
-          <div class="submission-func-container">
-            <div class="submission-file">
-              <a class="submission-file-item" v-for="(file, index) in submission.file" :key="file"
-                                              :href="submission.link[index]" target="_blank">{{ file.slice(0, file.indexOf('.')) }}</a>
-            </div>
-            <div class="submission-date">{{ submission.date }}</div>
-            <div :class="{'submission-status': true, 'submission-status-error': submission.status == 3}"
-                 :style="{'backgroundColor': submission_status_color[submission.status]}">
-              {{ submission_status[submission.status] }}
-            </div>
+      <li class="submission-item" v-for="(submission, index) in submission_list" :key="submission.id">
+        <div class="submission-collapse-container">
+          <div class="submission-collapse" @click="toggle">{{ submission.id }}</div>
+          <div class="submission-collapse-func">
+            <span class="submission-collapse-func-item">Submitted number: {{ calNumber(submission.info, 0) }}</span>
+            <span class="submission-collapse-func-item">Checked number: {{ calNumber(submission.info, 1) }}</span>
+            <span class="submission-collapse-func-item">Awarded number: {{ calNumber(submission.info, 2) }}</span>
           </div>
         </div>
-        <div class="submission-message">{{ submission.message }}</div>
+        
+        <div class="submission-item-container" :style="{'display': index == 0 ? 'display' : 'none'}">
+          <div class="submission-item-container-content" v-for="(info, inner_index) in submission.info" :key="info.message">
+            <div class="submission-func">
+              <div class="submission-title">{{ info.title }}</div>
+              <div class="submission-func-container">
+                <div class="submission-file">
+                  <a class="submission-file-item" v-for="(file, index) in info.file" :key="file"
+                                                  :href="info.link[index]" target="_blank">{{ file.slice(0, file.indexOf('.')) }}</a>
+                </div>
+                <div class="submission-date">{{ info.date }}</div>
+                <div :class="{'submission-status': true, 'submission-status-error': info.status == 3}"
+                    :style="{'backgroundColor': submission_status_color[info.status]}">
+                  {{ submission_status[info.status] }}
+                </div>
+              </div>
+            </div>
+            <div class="submission-message">{{ info.message }}</div>
+            <hr class="submission-line" v-if="inner_index != submission.info.length-1">
+          </div>
+        </div>
       </li>
     </ul>
   </div>
@@ -100,49 +154,82 @@ function submit(submit_info: SubmitType) {
       box-shadow: 0px 0px 10px #eee;
       list-style: none;
 
-      .submission-func {
-        display: flex;
-        justify-content: space-between;
-
-        .submission-title {
-          font-size: 17px;
+      .submission-collapse-container {
+        
+        .submission-collapse {
           font-weight: bold;
+          font-size: 18px;
           cursor: pointer;
         }
 
-        .submission-func-container {
+        .submission-collapse-func {
           display: flex;
+          justify-content: space-between;
+          margin-bottom: 10px;
 
-          .submission-file {
+          .submission-collapse-func-item {
+            color: #999;
             font-size: 13px;
-            color: #ff2020;
-
-            .submission-file-item {
-              padding: 3px 5px;
-              margin-right: 10px;
-              border: 1px solid #eee;
-              border-radius: 8px;
-              background-color: #00ffea53;
-              box-shadow: 0px 0px 5px #79fff8;
-              cursor: pointer;
-            }
-          }
-
-          .submission-date {
-            text-align: right;
-            font-size: 13px;
-            color: #aaa;
-            margin-right: 20px;
-          }
-          
-          .submission-status {
-            padding: 2px 5px;
-            color: #fff;
-            border-radius: 3px;
+            border-bottom: 1px solid #eee;
           }
         }
+      }
 
-        
+      .submission-item-container {
+
+        .submission-item-container-content {
+          padding-left: 10px;
+
+          .submission-line {
+            background-color: #eee;
+            border: 1px solid #eee;
+            margin-top: 5px;
+            margin-bottom: 15px;
+          }
+
+          .submission-func {
+            display: flex;
+            justify-content: space-between;
+
+            .submission-title {
+              font-size: 17px;
+              font-weight: 600;
+              cursor: pointer;
+            }
+
+            .submission-func-container {
+              display: flex;
+
+              .submission-file {
+                font-size: 13px;
+                color: #8c20ffac;
+
+                .submission-file-item {
+                  padding: 3px 5px;
+                  margin-right: 10px;
+                  border: 1px solid #eee;
+                  border-radius: 8px;
+                  background-color: #00ffea53;
+                  box-shadow: 0px 0px 5px #79fff8;
+                  cursor: pointer;
+                }
+              }
+
+              .submission-date {
+                text-align: right;
+                font-size: 13px;
+                color: #aaa;
+                margin-right: 20px;
+              }
+              
+              .submission-status {
+                padding: 2px 5px;
+                color: #fff;
+                border-radius: 3px;
+              }
+            }
+          }
+        }
       }
 
       .submission-message {
