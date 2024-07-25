@@ -9,5 +9,11 @@ message=memory 25、26 units words
 file=25words.jpg
 file=26words.jpg
 
+[math teaching material]
+date=24-07-25
+message=supplementary Advanced Mathematics ten pages
+file=math notes.jpg
+file=teaching material.jpg
+
 # write the task above end
 [end]
