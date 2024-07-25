@@ -60,8 +60,12 @@ function submit(submit_info: SubmitType) {
     <ul class="submission-content">
       <li class="submission-item" v-for="submission in submission_list" :key="submission.date">
         <div class="submission-func">
-          <a class="submission-title" target="_blank" :href="submission.link">{{ submission.title }}</a>
+          <div class="submission-title">{{ submission.title }}</div>
           <div class="submission-func-container">
+            <div class="submission-file">
+              <a class="submission-file-item" v-for="(file, index) in submission.file" :key="file"
+                                              :href="submission.link[index]" target="_blank">{{ file.slice(0, file.indexOf('.')) }}</a>
+            </div>
             <div class="submission-date">{{ submission.date }}</div>
             <div :class="{'submission-status': true, 'submission-status-error': submission.status == 3}"
                  :style="{'backgroundColor': submission_status_color[submission.status]}">
@@ -108,6 +112,21 @@ function submit(submit_info: SubmitType) {
 
         .submission-func-container {
           display: flex;
+
+          .submission-file {
+            font-size: 13px;
+            color: #ff2020;
+
+            .submission-file-item {
+              padding: 3px 5px;
+              margin-right: 10px;
+              border: 1px solid #eee;
+              border-radius: 8px;
+              background-color: #00ffea53;
+              box-shadow: 0px 0px 5px #79fff8;
+              cursor: pointer;
+            }
+          }
 
           .submission-date {
             text-align: right;

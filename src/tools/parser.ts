@@ -15,8 +15,8 @@ function parse_task(text: string): SubmissionType[] {
     date: null,
     title: null,
     message: null,
-    file: null,
-    link: null
+    file: [],
+    link: []
   })
 
   for (let line of lines) {
@@ -24,15 +24,21 @@ function parse_task(text: string): SubmissionType[] {
 
     if (!line.startsWith('#') && line != '') {
       if (line.startsWith('[') && line.endsWith(']')) {
-        task['link'] = './tasks/' + task['date'] + '/' + task['file']
+        for (let f of task['file']) {
+          task['link'].push('./tasks/' + task['date'] + '/' + f)
+        }
         task_list.push(task)
-        task = new Object({date: null, title: null, message: null, file: null, link: null})
+        task = new Object({date: null, title: null, message: null, file: [], link: []})
 
         let title = line.substring(1, line.length-1)
         task['title'] = title
       } else {
         let pair = line.split('=')
-        task[pair[0].trim()] = pair[1].trim()
+        if (pair[0] == 'file') {
+          task['file'].push(pair[1])
+        } else {
+          task[pair[0].trim()] = pair[1].trim()
+        }
       }
     }
   }
