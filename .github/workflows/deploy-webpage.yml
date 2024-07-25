@@ -13,12 +13,6 @@ jobs:
     - name: Build
       run: npm install && npm run build-only
 
-    # - name: Build and Deploy
-    #   uses: JamesIves/github-pages-deploy-action@v4.6.3
-    #   env:
-    #     ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-    #     branch: main
-    #     folder: docs
     - name: Deploy 🚀
       uses: JamesIves/github-pages-deploy-action@v4
       with:
