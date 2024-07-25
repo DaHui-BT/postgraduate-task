@@ -25,7 +25,7 @@ function load_data() {
       title: task.title,
       date: task.date,
       message: task.message,
-      status: 0,
+      status: 2,
       file: task.file,
       link: task.link
     })
