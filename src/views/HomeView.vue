@@ -5,7 +5,7 @@ import SubmissionChart from "../components/SubmissionChart.vue"
 
 <template>
   <div class="home">
-    <div class="describe">      
+    <div class="describe">
       <h1>Postgraduate Task</h1>
       <p>You need to submit your completed work to this warehouse, and when you complete the specified task, you will receive the target reward.</p>
       <p>This repository will show the completion status of your tasks, so that you can clearly understand what you have done.</p>

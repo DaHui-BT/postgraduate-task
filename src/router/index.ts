@@ -24,4 +24,27 @@ const router = createRouter({
   ]
 })
 
+import { alert_close, encode, verify } from '@/tools/secret'
+router.beforeEach((to, from, next) => {
+  let key = localStorage.getItem('secret_key')
+
+  if (key != null && key != undefined && key.trim() != '') {
+    let token = localStorage.getItem('token')
+
+    if (token == null || token == undefined || token.trim() == '') {
+      alert_close()
+      return
+    }
+    
+    if (verify(encode(token, key), '332d69e43466a23a1afde44e889f47f6')) {
+      next()
+    } else {
+      alert_close('Invalid Token!')
+    }
+    
+  } else {
+    alert_close()
+  }
+})
+
 export default router
