@@ -25,5 +25,7 @@ pre {
   margin: auto;
   border-radius: 5px;
   background-color: #eee;
+  word-wrap: break-word;
+  white-space: pre-line;
 }
 

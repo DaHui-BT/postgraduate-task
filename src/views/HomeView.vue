@@ -11,13 +11,13 @@ import SubmissionChart from "../components/SubmissionChart.vue"
       <p>This repository will show the completion status of your tasks, so that you can clearly understand what you have done.</p>
 
       <h2>Usage:</h2>
-      <p>In the first time you should run the following command in your project root directory to get the lastest tasks:</p>
+      <p>1. In the first time you should run the following command in your project root directory to get the lastest tasks:</p>
       <pre>
         git pull origin main
       </pre>
-      <p>You should submit your completed work to the tasks directory.</p>
+      <p>2. You should submit your completed work to the tasks directory.</p>
       
-      <p>After you have finished your tasks, you should the following command to submit you works:</p>
+      <p>3. After you have finished your tasks, you should the following command to submit you works:</p>
       <pre>
         # store in local storage
         git add .
@@ -29,7 +29,7 @@ import SubmissionChart from "../components/SubmissionChart.vue"
         git push origin main
       </pre>
 
-      <p>You can use the following commands to verify the submit is success or not:</p>
+      <p>4. You can use the following commands to verify the submit is success or not:</p>
       <pre>
         # this command will display the files changed but not add/commit
         git status
