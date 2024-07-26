@@ -39,5 +39,11 @@ message=Probability theory: 12 pages
 file=mathProbability-12-notes.jpg
 file=mathProbability-12-pages.jpg
 
+[math teaching material]
+date=24-07-26
+message=Linear algebra: 10 pages
+file=Linear algebra-10-notes.jpg
+file=Linear algebra-10-pages.jpg
+
 # write the task above end
 [end]
