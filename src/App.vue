@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
 
-// import { RouterLink, RouterView } from 'vue-router'
 const router = useRouter()
 
 function to(path: string) {
@@ -12,7 +11,7 @@ function to(path: string) {
 <template>
   <div class="app">
     <div class="wrapper">
-      <div class="nav-item" @click="to('/')">👍🛶🪿🥂👍🛶🦆🍻👌Home</div>
+      <div class="nav-item" @click="to('/')">👍🛶🦆🍻👌Home</div>
       <div class="nav-item" @click="to('/submission')">Submission</div>
     </div>
     <div class="wrapper-place"></div>

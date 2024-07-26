@@ -102,9 +102,9 @@ function submit(submit_info: SubmitType) {
         <div class="submission-collapse-container">
           <div class="submission-collapse" @click="toggle">{{ submission.id }}</div>
           <div class="submission-collapse-func">
-            <span class="submission-collapse-func-item">Submitted number: {{ calNumber(submission.info, 0) }}</span>
-            <span class="submission-collapse-func-item">Checked number: {{ calNumber(submission.info, 1) }}</span>
-            <span class="submission-collapse-func-item">Awarded number: {{ calNumber(submission.info, 2) }}</span>
+            <span class="submission-collapse-func-item">Submitted: {{ calNumber(submission.info, 0) }}</span>
+            <span class="submission-collapse-func-item">Checked: {{ calNumber(submission.info, 1) }}</span>
+            <span class="submission-collapse-func-item">Awarded: {{ calNumber(submission.info, 2) }}</span>
           </div>
         </div>
         
@@ -212,6 +212,7 @@ function submit(submit_info: SubmitType) {
                   background-color: #00ffea53;
                   box-shadow: 0px 0px 5px #79fff8;
                   cursor: pointer;
+                  white-space: nowrap;
                 }
               }
 
