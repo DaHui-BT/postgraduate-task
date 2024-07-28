@@ -60,5 +60,11 @@ date=24-07-28
 message=English words: 21, 22
 file=21unit-words.jpg
 file=22unit-words.jpg
+
+[Software engineering book]
+date=24-07-28
+message=Software engineering book: 20 pages
+file=software-20-pages-notes.jpg
+file=software-20-pages-book.jpg
 # write the task above end
 [end]
