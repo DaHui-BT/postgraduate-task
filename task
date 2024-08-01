@@ -66,5 +66,29 @@ date=24-07-28
 message=Software engineering book: 20 pages
 file=software-20-pages-notes.jpg
 file=software-20-pages-book.jpg
+
+[math teaching material]
+date=24-07-29
+message=Advanced Mathematics 40 pages
+file=math-40-notes.jpg
+file=math-40-pages.jpg
+
+[math 1000 Questions]
+date=24-07-29
+message=1000 Questions finish after listening the course:1 chapter
+file=math-A1.1-pages.jpg
+file=math-A1.2-pages.jpg
+
+[math teaching material]
+date=24-08-01
+message=Advanced Mathematics 50 pages
+file=math-50-notes.jpg
+file=math-50-pages.jpg
+
+[English Words]
+date=24-08-01
+message=English words: 19, 20
+file=19unit-words.jpg
+file=20unit-words.jpg
 # write the task above end
 [end]
