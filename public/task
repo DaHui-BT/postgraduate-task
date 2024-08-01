@@ -78,5 +78,17 @@ date=24-07-29
 message=1000 Questions finish after listening the course:1 chapter
 file=math-A1.1-pages.jpg
 file=math-A1.2-pages.jpg
+
+[math teaching material]
+date=24-08-01
+message=Advanced Mathematics 50 pages
+file=math-50-notes.jpg
+file=math-50-pages.jpg
+
+[English Words]
+date=24-08-01
+message=English words: 19, 20
+file=19unit-words.jpg
+file=20unit-words.jpg
 # write the task above end
 [end]
