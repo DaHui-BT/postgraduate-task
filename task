@@ -96,5 +96,35 @@ date=24-08-01
 message=English words: 17, 18
 file=17unit-words.jpg
 file=18unit-words.jpg
+
+[math teaching material]
+date=24-08-01
+message=Probability theory: 16 pages
+file=mathProbability-16-notes.jpg
+file=mathProbability-16-pages.jpg
+
+[Software engineering book]
+date=24-08-09
+message=Software engineering book: 30 pages
+file=software-30-pages-notes.jpg
+file=software-30-pages-book.jpg
+
+[Network book]
+date=24-08-09
+message=Network book 40 pages
+file=Network-book-40-notes.jpg
+file=Network-book-40-pages.jpg
+
+[English read practice]
+date=24-08-09
+message=2000 english 2: Cloze 、text 1
+file=2000-2 cloze.jpg
+file=2000-2 text 1.jpg
+
+[math teaching material]
+date=24-08-10
+message=Linear algebra: 15 pages
+file=Linear algebra-15-notes.jpg
+file=Linear algebra-15-pages.jpg
 # write the task above end
 [end]
