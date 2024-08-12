@@ -16,7 +16,6 @@ function loadFile(name: string) {
   return xhr.status === okStatus ? xhr.responseText : null
 }
 
-
 export {
   loadFile,
   readFile

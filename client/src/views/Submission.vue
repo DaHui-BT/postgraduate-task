@@ -3,9 +3,9 @@ import { reactive, ref } from "vue";
 import { loadFile } from '@/tools/file_utils'
 import { parse_task } from '@/tools/parser'
 import type { SubmissionType, TaskType } from '@/types/submission'
-import type { SubmitType } from "@/types/submit";
+import type { SubmitType } from "@/types/submit"
 
-import SubmitForm from "@/components/SubmitForm.vue";
+import SubmitForm from "@/components/SubmitForm.vue"
 
 
 const is_submit_form_show = ref<boolean>(false)
@@ -82,7 +82,7 @@ function submit(submit_info: SubmitType) {
       alert('Nothing to submit! The form should be completed!')
     } else {
       // submit the data
-
+      console.log("submit: ", submit_info)
     }
   }
   is_submit_form_show.value = ! is_submit_form_show.value

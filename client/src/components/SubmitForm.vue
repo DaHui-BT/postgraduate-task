@@ -38,9 +38,9 @@ function uploadData (e: Event) {
 }
 
 function submit() {
-  alert('Please use git to submit!')
-  return
-  // emit('submit', submit_info)
+  // alert('Please use git to submit!')
+  // return
+  emit('submit', submit_info)
   // submit_info.file_list = []
   // submit_info.message = ''
   // submit_info.title = ''
