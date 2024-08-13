@@ -5,6 +5,8 @@ import { parse_task } from '@/tools/parser'
 import type { SubmissionType, TaskType } from '@/types/submission'
 import type { SubmitType } from "@/types/submit"
 
+import { get_task_list, save_task } from '@/api/task'
+
 import SubmitForm from "@/components/SubmitForm.vue"
 
 
@@ -15,50 +17,96 @@ const submission_status_color = ['#895ef9fc', '#41d6ba', '#3ddf58', '#f95e85fc']
 const submission_list = reactive<SubmissionType[]>([])
 
 function load_data() {
-  const ans_text = loadFile('./submission.json')
-  const ans_list: number[] = eval('' + ans_text)
+  // const ans_text = loadFile('./submission.json')
+  // const ans_list: number[] = eval('' + ans_text)
 
-  let res = loadFile('./task')?.toString()
-  if (res == null) return
+  // let res = loadFile('./task')?.toString()
+  // let task_list = parse_task(res);
+  // console.log(task_list)
 
-  let task_list = parse_task(res);
+  get_task_list().then(({data}) => {
+    submission_list.splice(0, submission_list.length)
+    if (data == null || data.length == 0) return
 
-  task_list.forEach((task: TaskType, index: number) => {
-    let submission_index = -1
+    data.forEach((task: TaskType, index: number) => {
+      let submission_index = -1
+      let date = task.date.split(' ')[0]
+      let link: string[] = []
+      // task.file = task.file_list
+      // console.log(task)
 
-    for (let i = 0; i < submission_list.length; ++ i) {
-      if (submission_list[i].id == task.date) {
-        submission_index = i
-        break
+      task.file.forEach((item: string) => {link.push('http://localhost:3000/' + item)})
+      
+      for (let i = 0; i < submission_list.length; ++ i) {
+        if (submission_list[i].id == date) {
+          submission_index = i
+          break
+        }
       }
-    }
-    if (submission_index == -1) {
-      submission_list.push({
-        id: task.date,
-        info: [{
+      if (submission_index == -1) {
+        submission_list.push({
+          id: date,
+          info: [{
+            date: task.date,
+            title: task.title,
+            message: task.message,
+            file: task.file,
+            status: task.status,
+            link: link
+          }]
+        })
+      } else {
+        submission_list[submission_index].info.push({
           date: task.date,
           title: task.title,
           message: task.message,
           file: task.file,
-          status: ans_list[index] | 0,
-          link: task.link
-        }]
-      })
-    } else {
-      submission_list[submission_index].info.push({
-        date: task.date,
-        title: task.title,
-        message: task.message,
-        file: task.file,
-        status: ans_list[index] | 0,
-        link: task.link
-      })
-    }
+          status: task.status,
+          link: link
+        })
+      }
+    })
   })
 
-  submission_list.sort((s1, s2) => -s1.id.localeCompare(s2.id))
+  // let task_list = parse_task(res);
+
+  // task_list.forEach((task: TaskType, index: number) => {
+  //   let submission_index = -1
+
+  //   for (let i = 0; i < submission_list.length; ++ i) {
+  //     if (submission_list[i].id == task.date) {
+  //       submission_index = i
+  //       break
+  //     }
+  //   }
+  //   if (submission_index == -1) {
+  //     submission_list.push({
+  //       id: task.date,
+  //       info: [{
+  //         date: task.date,
+  //         title: task.title,
+  //         message: task.message,
+  //         file: task.file,
+  //         status: ans_list[index] | 0,
+  //         link: task.link
+  //       }]
+  //     })
+  //   } else {
+  //     submission_list[submission_index].info.push({
+  //       date: task.date,
+  //       title: task.title,
+  //       message: task.message,
+  //       file: task.file,
+  //       status: ans_list[index] | 0,
+  //       link: task.link
+  //     })
+  //   }
+  // })
+
+  // submission_list.sort((s1, s2) => -s1.id.localeCompare(s2.id))
 }
 load_data()
+console.log(submission_list)
 
 function toggle(event: any) {
   if (event.target.parentNode.nextElementSibling.style.display == 'none') {
@@ -82,11 +130,13 @@ function submit(submit_info: SubmitType) {
       alert('Nothing to submit! The form should be completed!')
     } else {
       // submit the data
-      console.log("submit: ", submit_info)
+      // console.log("submit: ", submit_info)
+      save_task(submit_info)
     }
   }
   is_submit_form_show.value = ! is_submit_form_show.value
-  console.log(is_submit_form_show.value, submit_info)
+  // console.log(is_submit_form_show.value, submit_info)
+  load_data()
 }
 
 </script>
@@ -97,7 +147,7 @@ function submit(submit_info: SubmitType) {
 
     <submit-form :is_submit_form_show="is_submit_form_show" @submit="submit"></submit-form>
 
-    <ul class="submission-content">
+    <ul class="submission-content" v-if="submission_list.length > 0">
       <li class="submission-item" v-for="(submission, index) in submission_list" :key="submission.id">
         <div class="submission-collapse-container">
           <div class="submission-collapse" @click="toggle">{{ submission.id }}</div>
@@ -115,9 +165,10 @@ function submit(submit_info: SubmitType) {
               <div class="submission-func-container">
                 <div class="submission-file">
                   <a class="submission-file-item" v-for="(file, index) in info.file" :key="file"
-                                                  :href="info.link[index]" target="_blank">{{ file.slice(0, file.indexOf('.')) }}</a>
+                                                  :href="info.link[index]"
+                                                  target="_blank">{{ file.slice(file.lastIndexOf('\\')+1, file.lastIndexOf('-')) }}</a>
                 </div>
-                <div class="submission-date">{{ info.date }}</div>
+                <div class="submission-date">{{ info.date.split(' ')[1] }}</div>
                 <div :class="{'submission-status': true, 'submission-status-error': info.status == 3}"
                     :style="{'backgroundColor': submission_status_color[info.status]}">
                   {{ submission_status[info.status] }}
@@ -130,6 +181,9 @@ function submit(submit_info: SubmitType) {
         </div>
       </li>
     </ul>
+    <div class="empty" v-else>
+      Nothing to show!
+    </div>
   </div>
 </template>
 

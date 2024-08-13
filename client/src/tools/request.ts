@@ -3,10 +3,15 @@ import axios, { Axios, AxiosHeaders, type AxiosRequestConfig, type AxiosResponse
 class Request {
   instance: Axios
 
-  constructor(config: CreateAxiosDefaults) {
-    config.baseURL = 'http://localhost:3000/api/get_task_list'
-    config.timeout = 3000
-    this.instance = axios.create(config)
+  constructor(config: CreateAxiosDefaults | null) {
+    if (!config) {
+      config = {}
+      config.baseURL = 'http://localhost:3000/api/'
+      config.timeout = 3000
+      this.instance = axios.create(config)
+    } else {
+      this.instance = axios.create(config)
+    }
   }
 
   request(url: string, method: 'GET' | 'POST' | 'PUT' | 'DELETE',

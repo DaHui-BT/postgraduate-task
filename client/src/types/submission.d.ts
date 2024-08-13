@@ -4,7 +4,7 @@ interface TaskType {
   message: string,
   file: string[],
   status: number,
-  link: string
+  link: string[]
 }
 
 interface SubmissionType {
