@@ -137,5 +137,10 @@ file=2000-2 text 3.jpg
 date=24-08-27
 message=English words: 9
 file=9unit-words.jpg
+
+[data structure]
+date=24-08-27
+message=11-15 vedio frequency
+file=11-15-vedio.jpg
 # write the task above end
 [end]
