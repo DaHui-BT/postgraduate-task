@@ -132,5 +132,10 @@ date=24-08-12
 message=2000 english 2: text 2、text 3
 file=2000-2 text 2.jpg
 file=2000-2 text 3.jpg
+
+[English Words]
+date=24-08-27
+message=English words: 9
+file=9unit-words.jpg
 # write the task above end
 [end]
