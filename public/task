@@ -162,5 +162,11 @@ file=7unit-words.jpg
 date=24-08-28
 message=English words: 6
 file=6unit-words.jpg
+
+[math teaching material]
+date=24-08-28
+message=Linear algebra: 42 pages
+file=Linear algebra-42-pages.jpg
+
 # write the task above end
 [end]
