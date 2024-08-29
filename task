@@ -197,5 +197,10 @@ file=2021-1 cloze.jpg
 date=24-08-29
 message=Linear algebra: 54 pages
 file=Linear algebra-54-pages.jpg
+
+[English read practice]
+date=24-08-29
+message=2021 english 1: text 2
+file=2021-1 text 2.jpg
 # write the task above end
 [end]
