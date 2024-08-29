@@ -187,5 +187,10 @@ file=2021-1 text 1.jpg
 date=24-08-29
 message=English words: 5
 file=5unit-words.jpg
+
+[English read practice]
+date=24-08-29
+message=2021 english 1: cloze
+file=2021-1 cloze.jpg
 # write the task above end
 [end]
