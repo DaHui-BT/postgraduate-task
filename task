@@ -212,5 +212,10 @@ file=4unit-words.jpg
 date=24-08-30
 message=Probability theory: 30 pages
 file=mathProbability-30-pages.jpg
+
+[data structure]
+date=24-08-30
+message=21 vedio frequency
+file=21-vedio.jpg
 # write the task above end
 [end]
