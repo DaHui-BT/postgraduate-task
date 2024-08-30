@@ -222,5 +222,10 @@ file=21-vedio.jpg
 date=24-08-30
 message=2021 english 1: text 3
 file=2021-1 text 3.jpg
+
+[math teaching material]
+date=24-08-30
+message=Linear algebra: 60 pages
+file=Linear algebra-60-pages.jpg
 # write the task above end
 [end]
