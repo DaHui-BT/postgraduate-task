@@ -207,5 +207,10 @@ file=2021-1 text 2.jpg
 date=24-08-30
 message=English words: 4
 file=4unit-words.jpg
+
+[math teaching material]
+date=24-08-30
+message=Probability theory: 30 pages
+file=mathProbability-30-pages.jpg
 # write the task above end
 [end]
