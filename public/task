@@ -282,5 +282,10 @@ file=1vedio composition practice.jpg
 date=24-09-02
 message=24、25 vedio frequency
 file=24-25-vedio.jpg
+
+[math advanced practice]
+date=24-09-01
+message=Advanced Mathematics basic 3
+file=advanced basic 3 practice.jpg
 # write the task above end
 [end]
