@@ -342,5 +342,10 @@ file=required 25unit-words.jpg
 date=24-09-04
 message=3 vedio composition
 file=3vedio composition.jpg
+
+[data structure]
+date=24-09-04
+message=28、29 vedio frequency
+file=28-29-vedio.jpg
 # write the task above end
 [end]
