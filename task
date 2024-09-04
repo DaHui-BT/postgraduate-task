@@ -297,5 +297,40 @@ file=70 pages teaching material.jpg
 date=24-09-02
 message=660 practice math linear algebra 300
 file=660 linear algebra 300.jpg
+
+[English Words]
+date=24-09-03
+message=English words required: 26
+file=required 26unit-words.jpg
+
+[Principles of computer composition]
+date=24-09-03
+message=2 vedio composition
+file=2vedio composition.jpg
+
+[data structure practice]
+date=24-09-03
+message=26、27、vedio frequency practice
+file=26-27-vedio practice.jpg
+
+[data structure]
+date=24-09-03
+message=26、27 vedio frequency
+file=26-27-vedio.jpg
+
+[math teaching material]
+date=24-09-03
+message=Advanced Mathematics 80 pages
+file=80 pages teaching material.jpg
+
+[math teaching material]
+date=24-09-03
+message=Probability theory: 40 pages
+file=mathProbability-40-pages.jpg
+
+[math 1000 practice]
+date=24-09-03
+message=1000 practice math linear algebra 2
+file=1000 linear algebra 2.jpg
 # write the task above end
 [end]
