@@ -292,5 +292,10 @@ file=advanced basic 3 practice.jpg
 date=24-09-01
 message=Advanced Mathematics 70 pages
 file=70 pages teaching material.jpg
+
+[math 660 practice]
+date=24-09-02
+message=660 practice math linear algebra 300
+file=660 linear algebra 300.jpg
 # write the task above end
 [end]
