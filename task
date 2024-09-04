@@ -352,5 +352,10 @@ file=28-29-vedio.jpg
 date=24-09-04
 message=Advanced Mathematics 88 pages
 file=88 pages teaching material.jpg
+
+[math teaching material]
+date=24-09-04
+message=Linear algebra: 66 pages
+file=Linear algebra-66-pages.jpg
 # write the task above end
 [end]
