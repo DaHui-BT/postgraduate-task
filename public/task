@@ -357,5 +357,10 @@ file=88 pages teaching material.jpg
 date=24-09-04
 message=Linear algebra: 66 pages
 file=Linear algebra-66-pages.jpg
+
+[math 660 practice]
+date=24-09-04
+message=660 practice math Probability 432
+file=660 Probability 432.jpg
 # write the task above end
 [end]
