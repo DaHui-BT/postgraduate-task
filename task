@@ -372,5 +372,10 @@ file=required 24unit-words.jpg
 date=24-09-05
 message=4 vedio composition
 file=4vedio composition.jpg
+
+[math 660 practice]
+date=24-09-05
+message=660 practice math Probability 435
+file=660 Probability 435.jpg
 # write the task above end
 [end]
