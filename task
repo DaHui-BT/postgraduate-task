@@ -387,5 +387,10 @@ file=30-31-vedio.jpg
 date=24-09-05
 message=Advanced Mathematics 98 pages
 file=98 pages teaching material.jpg
+
+[math 1000 practice]
+date=24-09-05
+message=1000 practice math of advanced 4
+file=1000 advanced 4.jpg
 # write the task above end
 [end]
