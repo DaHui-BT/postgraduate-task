@@ -397,5 +397,10 @@ file=1000 advanced 4.jpg
 date=24-09-06
 message=English words required: 23
 file=required 23unit-words.jpg
+
+[Principles of computer composition]
+date=24-09-06
+message=5 vedio composition
+file=5vedio composition.jpg
 # write the task above end
 [end]
