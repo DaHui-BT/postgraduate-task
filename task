@@ -412,5 +412,20 @@ file=32-33-vedio.jpg
 date=24-09-06
 message=Advanced Mathematics 108 pages
 file=108 pages teaching material.jpg
+
+[English Words]
+date=24-09-07
+message=English words required: 22
+file=required 22unit-words.jpg
+
+[math teaching material]
+date=24-09-07
+message=Probability theory: 41 pages
+file=mathProbability-41-pages.jpg
+
+[math 1000 practice]
+date=24-09-07
+message=1000 practice math of advanced 5
+file=1000 advanced 5.jpg
 # write the task above end
 [end]
