@@ -447,5 +447,10 @@ file=34-35-vedio.jpg
 date=24-09-08
 message=36、37 vedio frequency
 file=36-37-vedio.jpg
+
+[data structure]
+date=24-09-08
+message=38、39 vedio frequency
+file=38-39-vedio.jpg
 # write the task above end
 [end]
