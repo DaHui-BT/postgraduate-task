@@ -437,5 +437,10 @@ file=required 21unit-words.jpg
 date=24-09-08
 message=Probability theory: 50 pages
 file=mathProbability-50-pages.jpg
+
+[data structure]
+date=24-09-08
+message=34、35 vedio frequency
+file=34-35-vedio.jpg
 # write the task above end
 [end]
