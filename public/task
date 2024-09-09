@@ -477,5 +477,15 @@ file=required 20unit-words.jpg
 date=24-09-09
 message=40、41 vedio frequency
 file=40-41-vedio.jpg
+
+[math teaching material]
+date=24-09-09
+message=Linear algebra: 72 pages
+file=Linear algebra-72-pages.jpg
+
+[math teaching material]
+date=24-09-09
+message=Linear algebra: 78 pages
+file=Linear algebra-78-pages.jpg
 # write the task above end
 [end]
