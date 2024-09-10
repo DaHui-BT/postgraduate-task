@@ -507,5 +507,10 @@ file=42-43-vedio.jpg
 date=24-09-10
 message=Linear algebra: 90 pages
 file=Linear algebra-90-pages.jpg
+
+[math teaching material]
+date=24-09-10
+message=Linear algebra: 96 pages
+file=Linear algebra-96-pages.jpg
 # write the task above end
 [end]
