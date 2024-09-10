@@ -502,5 +502,10 @@ file=required 19unit-words.jpg
 date=24-09-10
 message=42、43 vedio frequency
 file=42-43-vedio.jpg
+
+[math teaching material]
+date=24-09-10
+message=Linear algebra: 90 pages
+file=Linear algebra-90-pages.jpg
 # write the task above end
 [end]
