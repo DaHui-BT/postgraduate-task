@@ -557,5 +557,15 @@ file=46-47-vedio.jpg
 date=24-09-12
 message=48、49 vedio frequency
 file=48-49-vedio.jpg
+
+[math teaching material]
+date=24-09-12
+message=Linear algebra: 120 pages
+file=Linear algebra-120-pages.jpg
+
+[math teaching material]
+date=24-09-12
+message=Linear algebra: 126 pages
+file=Linear algebra-126-pages.jpg
 # write the task above end
 [end]
