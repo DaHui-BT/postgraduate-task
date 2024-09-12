@@ -552,5 +552,10 @@ file=required 17unit-words.jpg
 date=24-09-12
 message=46、47 vedio frequency
 file=46-47-vedio.jpg
+
+[data structure]
+date=24-09-12
+message=48、49 vedio frequency
+file=48-49-vedio.jpg
 # write the task above end
 [end]
