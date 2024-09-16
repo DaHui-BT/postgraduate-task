@@ -634,5 +634,11 @@ file=required 13unit-words.jpg
 date=24-09-16
 message=Probability theory: 56 pages
 file=mathProbability-56-pages.jpg
+
+[math 1000 practice]
+date=24-09-16
+message=1000 practice math of Probability 2
+file=1000 Probability 2.1.jpg
+file=1000 Probability 2.2.jpg
 # write the task above end
 [end]
