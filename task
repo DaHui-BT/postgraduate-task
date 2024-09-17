@@ -662,5 +662,11 @@ file=660 linear 307.jpg
 date=24-09-17
 message=English words required: 12
 file=required 12unit-words.jpg
+
+[math 330 practice]
+date=24-09-17
+message=330 practice math of linear 185
+file=330 linear 183.jpg
+file=330 linear 185.jpg
 # write the task above end
 [end]
