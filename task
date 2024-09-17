@@ -679,5 +679,11 @@ file=330 linear 190.jpg
 date=24-09-17
 message=Probability theory: 62 pages
 file=mathProbability-62-pages.jpg
+
+[math 1000 practice]
+date=24-09-17
+message=1000 practice math of linear algebra 4
+file=1000 linear algebra 4.1.jpg
+file=1000 linear algebra 4.2.jpg
 # write the task above end
 [end]
