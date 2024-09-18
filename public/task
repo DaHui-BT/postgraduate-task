@@ -691,5 +691,11 @@ date=24-09-17
 message=1000 practice math of linear algebra 5
 file=1000 linear algebra 5.1.jpg
 file=1000 linear algebra 5.2.jpg
+
+[math 660 practice]
+date=24-09-18
+message=660 practice math of linear 316
+file=660 linear 310.jpg
+file=660 linear 316.jpg
 # write the task above end
 [end]
