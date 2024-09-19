@@ -707,5 +707,10 @@ file=required 11unit-words.jpg
 date=24-09-18
 message=advanced: 114 pages
 file=math advanced-114-pages.jpg
+
+[English Words]
+date=24-09-19
+message=English words required: 10
+file=required 10unit-words.jpg
 # write the task above end
 [end]
