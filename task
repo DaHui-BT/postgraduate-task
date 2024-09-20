@@ -727,5 +727,11 @@ file=required 9unit-words.jpg
 date=24-09-20
 message=advanced: 135 pages
 file=math advanced-135-pages.jpg
+
+[politics course]
+date=24-09-20
+message=politics course: 1
+file=politics course-1.1.jpg
+file=politics course-1.2.jpg
 # write the task above end
 [end]
