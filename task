@@ -733,5 +733,10 @@ date=24-09-20
 message=politics course: 1
 file=politics course-1.1.jpg
 file=politics course-1.2.jpg
+
+[math teaching material]
+date=24-09-20
+message=Probability theory: 68 pages
+file=mathProbability-68-pages.jpg
 # write the task above end
 [end]
