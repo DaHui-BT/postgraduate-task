@@ -755,5 +755,11 @@ date=24-09-21
 message=2008 true linear 216 pages
 file=2008 linear 215 pages.jpg
 file=2008 linear 216 pages.jpg
+
+[politics 1000 practice]
+date=24-09-21
+message=politics 1000 practice :1-9
+file=politics 1000 practice 1-5.jpg
+file=politics 1000 practice 6-9.jpg
 # write the task above end
 [end]
