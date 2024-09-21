@@ -738,5 +738,10 @@ file=politics course-1.2.jpg
 date=24-09-20
 message=Probability theory: 68 pages
 file=mathProbability-68-pages.jpg
+
+[English Words]
+date=24-09-21
+message=English words required: 8
+file=required 8unit-words.jpg
 # write the task above end
 [end]
