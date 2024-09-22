@@ -766,5 +766,11 @@ file=politics 1000 practice 6-9.jpg
 date=24-09-22
 message=English words required: 7
 file=required 7unit-words.jpg
+
+[math 660 practice]
+date=24-09-22
+message=660 practice math of linear 334
+file=660 linear 328.jpg
+file=660 linear 334.jpg
 # write the task above end
 [end]
