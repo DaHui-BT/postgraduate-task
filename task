@@ -783,5 +783,11 @@ date=24-09-22
 message=330 practice math of linear 100 pages
 file=330 linear 99 pages.jpg
 file=330 linear 100 pages.jpg
+
+[math 330 practice]
+date=24-09-22
+message=330 practice math of linear 103 pages
+file=330 linear 101 pages.jpg
+file=330 linear 103 pages.jpg
 # write the task above end
 [end]
