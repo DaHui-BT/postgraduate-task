@@ -761,5 +761,10 @@ date=24-09-21
 message=politics 1000 practice :1-9
 file=politics 1000 practice 1-5.jpg
 file=politics 1000 practice 6-9.jpg
+
+[English Words]
+date=24-09-22
+message=English words required: 7
+file=required 7unit-words.jpg
 # write the task above end
 [end]
