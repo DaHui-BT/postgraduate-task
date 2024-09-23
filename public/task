@@ -823,5 +823,10 @@ file=required 6unit-words.jpg
 date=24-09-23
 message=advanced practice: 6
 file=math advanced practice 6.jpg
+
+[math teaching material practice]
+date=24-09-23
+message=advanced practice: 7
+file=math advanced practice 7.jpg
 # write the task above end
 [end]
