@@ -849,5 +849,11 @@ file=mathProbability-80-pages.jpg
 date=24-09-23
 message=Probability theory: 86 pages
 file=mathProbability-86-pages.jpg
+
+[math 1000 practice]
+date=24-09-23
+message=1000 practice math of linear algebra 6
+file=1000 linear algebra 6.1.jpg
+file=1000 linear algebra 6.2.jpg
 # write the task above end
 [end]
