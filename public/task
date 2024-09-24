@@ -860,5 +860,11 @@ file=1000 linear algebra 6.2.jpg
 date=24-09-24
 message=English words required: 5
 file=required 5unit-words.jpg
+
+[math 2008 True]
+date=24-09-24
+message=2008 true linear 228 pages
+file=2008 linear 227 pages.jpg
+file=2008 linear 228 pages.jpg
 # write the task above end
 [end]
