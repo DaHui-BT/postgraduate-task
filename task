@@ -871,5 +871,10 @@ file=2008 linear 228 pages.jpg
 date=24-09-24
 message=advanced: 149 pages
 file=math advanced-149-pages.jpg
+
+[math teaching material]
+date=24-09-24
+message=Probability theory: 92 pages
+file=mathProbability-92-pages.jpg
 # write the task above end
 [end]
