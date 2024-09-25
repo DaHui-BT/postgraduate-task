@@ -892,5 +892,10 @@ file=strengthen 1000 linear algebra 3.2.jpg
 date=24-09-25
 message=1000 practice math of advanced 7
 file=1000 advanced 7.jpg
+
+[math 1000 practice strengthen]
+date=24-09-25
+message=1000 practice strengthen math of advanced 7
+file=strengthen 1000 advanced 7.jpg
 # write the task above end
 [end]
