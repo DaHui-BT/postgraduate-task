@@ -925,5 +925,11 @@ date=24-09-25
 message=2022 true linear 241 pages
 file=2022 linear 235 pages.jpg
 file=2022 linear 236 pages.jpg
+
+[English Words]
+date=24-09-26
+message=English words required: 3
+file=required 3unit-words.jpg
+
 # write the task above end
 [end]
