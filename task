@@ -953,5 +953,11 @@ message=660 practice math of probability 461
 file=660 Probability 452.jpg
 file=660 Probability 458.jpg
 file=660 Probability 461.jpg
+
+[math 660 practice]
+date=24-09-27
+message=660 practice math of linear 120
+file=660 linear 119.jpg
+file=660 linear 120.jpg
 # write the task above end
 [end]
