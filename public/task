@@ -931,5 +931,9 @@ date=24-09-26
 message=English words required: 3
 file=required 3unit-words.jpg
 
+[English Words]
+date=24-09-27
+message=English words required: 2
+file=required 2unit-words.jpg
 # write the task above end
 [end]
