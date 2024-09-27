@@ -965,5 +965,11 @@ date=24-09-27
 message=660 practice math of linear 123
 file=660 linear 121.jpg
 file=660 linear 123.jpg
+
+[math 660 practice]
+date=24-09-27
+message=660 practice math of linear 126
+file=660 linear 125.jpg
+file=660 linear 126.jpg
 # write the task above end
 [end]
