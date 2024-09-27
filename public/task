@@ -935,5 +935,10 @@ file=required 3unit-words.jpg
 date=24-09-27
 message=English words required: 2
 file=required 2unit-words.jpg
+
+[math 2022 True]
+date=24-09-27
+message=2022 true advanced 56 pages
+file=2022 advanced 56 pages.jpg
 # write the task above end
 [end]
