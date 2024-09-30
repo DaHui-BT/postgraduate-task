@@ -994,5 +994,33 @@ file=330 linear 217.jpg
 date=24-09-29
 message=phone english words: 100
 file=phone english words 100.jpg
+
+[math 660 practice]
+date=24-09-29
+message=660 practice math of linear 135
+file=660 linear 133.jpg
+file=660 linear 135.jpg
+
+[math 660 practice]
+date=24-09-29
+message=660 practice math of linear 138
+file=660 linear 137.jpg
+file=660 linear 138.jpg
+
+[math 660 practice]
+date=24-09-29
+message=660 practice math of linear 141
+file=660 linear 139.jpg
+file=660 linear 141.jpg
+
+[politics course]
+date=24-09-20
+message=politics course: 3
+file=politics course-3.jpg
+
+[politics course]
+date=24-09-20
+message=politics course: 4
+file=politics course-4.jpg
 # write the task above end
 [end]
