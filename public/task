@@ -1040,5 +1040,10 @@ file=660 linear 148.jpg
 date=24-09-30
 message=politics course: 5
 file=politics course-5.jpg
+
+[English Words]
+date=24-09-30
+message=phone english words: 200
+file=phone english words 200.jpg
 # write the task above end
 [end]
