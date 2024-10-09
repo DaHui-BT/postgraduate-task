@@ -1069,5 +1069,23 @@ date=24-10-05
 message=2008 true linear 247 pages
 file=2008 linear 245 pages.jpg
 file=2008 linear 247 pages.jpg
+
+[math 2008 True]
+date=24-10-09
+message=2008 true linear 250 pages
+file=2008 linear 249 pages.jpg
+file=2008 linear 250 pages.jpg
+
+[math 2008 True]
+date=24-10-09
+message=2008 true linear 253 pages
+file=2008 linear 251 pages.jpg
+file=2008 linear 253 pages.jpg
+
+[math 330 practice]
+date=24-10-09
+message=330 practice math of linear 225
+file=330 linear 221.jpg
+file=330 linear 225.jpg
 # write the task above end
 [end]
