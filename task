@@ -1100,5 +1100,11 @@ date=24-10-10
 message=2008 true advanced 75 pages
 file=2008 advanced 73 pages.jpg
 file=2008 advanced 75 pages.jpg
+
+[math 2008 True]
+date=24-10-10
+message=2008 true probability 293 pages
+file=2008 probability 291 pages.jpg
+file=2008 probability 293 pages.jpg
 # write the task above end
 [end]
