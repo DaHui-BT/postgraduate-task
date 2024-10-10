@@ -1116,5 +1116,10 @@ file=math advanced-177-pages.jpg
 date=24-10-10
 message=Probability theory: 103 pages
 file=mathProbability-103-pages.jpg
+
+[politics course]
+date=24-10-10
+message=politics course: 6
+file=politics course-6.jpg
 # write the task above end
 [end]
