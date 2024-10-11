@@ -1131,5 +1131,11 @@ file=phone english words 300.jpg
 date=24-10-11
 message=phone english words: 400
 file=phone english words 400.jpg
+
+[politics 1000 practice]
+date=24-10-11
+message=politics 1000 practice :10-36
+file=politics 1000 practice 10-23.jpg
+file=politics 1000 practice 24-36.jpg
 # write the task above end
 [end]
