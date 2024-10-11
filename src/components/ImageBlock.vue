@@ -17,7 +17,7 @@ function close() {
 
 <style lang="scss" scoped>
   .image-block {
-    position: absolute;
+    position: fixed;
     width: 100%;
     height: 100vh;
     top: 0;

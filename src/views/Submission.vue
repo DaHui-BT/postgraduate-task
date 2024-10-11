@@ -103,7 +103,6 @@ function submit(submit_info: TaskType) {
       alert('Nothing to submit! The form should be completed!')
     } else {
       // submit the data
-      console.log("submit: ", submit_info)
       database.addOne('postgraduate-task', 'tasks', submit_info)
     }
     load_data()

@@ -28,13 +28,13 @@ import { alert_close, encode, verify } from '@/tools/secret'
 router.beforeEach((to, from, next) => {
   let key = localStorage.getItem('secret_key')
 
-  let session_token = sessionStorage.getItem('token')
-  if (session_token == null) {
-    let token = prompt('input your token')
-    if (token != '123') {
-      alert('wrong token')
-    }
-  }
+  // let session_token = sessionStorage.getItem('token')
+  // if (session_token == null) {
+  //   let token = prompt('input your token')
+  //   if (token != '123') {
+  //     alert('wrong token')
+  //   }
+  // }
 
 
   if (key != null && key != undefined && key.trim() != '') {
