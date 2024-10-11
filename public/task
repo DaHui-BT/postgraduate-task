@@ -1143,5 +1143,11 @@ date=24-10-11
 message=politics 1000 practice :37-59
 file=politics 1000 practice 37-54.jpg
 file=politics 1000 practice 55-59.jpg
+
+[math 2008 True]
+date=24-10-11
+message=2008 true advanced 79 pages
+file=2008 advanced 77 pages.jpg
+file=2008 advanced 79 pages.jpg
 # write the task above end
 [end]
