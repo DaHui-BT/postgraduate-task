@@ -1137,5 +1137,11 @@ date=24-10-11
 message=politics 1000 practice :10-36
 file=politics 1000 practice 10-23.jpg
 file=politics 1000 practice 24-36.jpg
+
+[politics 1000 practice]
+date=24-10-11
+message=politics 1000 practice :37-59
+file=politics 1000 practice 37-54.jpg
+file=politics 1000 practice 55-59.jpg
 # write the task above end
 [end]
