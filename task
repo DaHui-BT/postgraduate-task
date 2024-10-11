@@ -1161,5 +1161,11 @@ message=2008 true linear 265 pages
 file=2008 linear 261 pages.jpg
 file=2008 linear 263 pages.jpg
 file=2008 linear 265 pages.jpg
+
+[math 2008 True]
+date=24-10-11
+message=2008 true probability 297 pages
+file=2008 probability 295 pages.jpg
+file=2008 probability 297 pages.jpg
 # write the task above end
 [end]
