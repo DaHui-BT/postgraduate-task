@@ -1,8 +1,7 @@
 const fs = require('fs')
-const moment = require('moment')
 const path = require('path')
 const Realm = require('realm-web')
-const sharp = require('sharp')
+const moment = require('moment')
 
 
 class Database {
@@ -33,6 +32,11 @@ class Database {
       throw new Error("MongoDB client not initialized. Call initialize() first.")
     }
     return this.databse.db(dbName).collection(collectionName)
+  }
+
+  async findList(dbName, collectionName, filter = {}) {
+    const collection = this.getCollection(dbName, collectionName)
+    return await collection.find(filter)
   }
 
   async addOne(dbName, collectionName, document = {}) {
@@ -69,9 +73,7 @@ class Database {
   
   // convert File to Binary
    async fileToBinary(file_path) {
-    // const file_buffer = fs.readFileSync(file_path)
-    const file_buffer = await sharp(file_path).webp({quality: 80}).toBuffer()
-
+    const file_buffer = fs.readFileSync(file_path)
     const binary = new Realm.BSON.Binary(file_buffer)
     const fileInfo = path.parse(file_path)
     
@@ -94,6 +96,21 @@ class Database {
     
     const result = await collection.insertOne(document)
     return {insertedId: result.insertedId, file_name: document.filename}
+  }
+  
+  async getFile(dbName, collectionName, fileId) {
+    const collection = this.getCollection(dbName, collectionName)
+    const document = await collection.findOne({ _id: fileId })
+
+    if (!document || !document.data) {
+      throw new Error("File not found")
+    }
+
+    const { data, ...metadata } = document
+    return {
+      fileData: data.buffer,
+      metadata
+    }
   }
 
 }
@@ -145,88 +162,53 @@ function parse_task(text) {
 
 // let database = new Database()
 // database.initialize().then(() => {
-//   let data = fs.readFileSync(path.join(__dirname, '../../public/submission.json'), 'utf-8')
-//   let status_list = data.replace('[', '').replace(']', ']').split(',')
-//   status_list = status_list.map(status => parseInt(status))
-  
-//   let task_list = fs.readFileSync(path.join(__dirname, '../../public/task'), 'utf8')
-//   task_list = parse_task(task_list)
-//   console.log('============================ total task length: ', task_list.length, ' ============================')
-  
-//   task_list.forEach(async (task, index) => {
-//     let new_task = {
-//       date: new Date('20' + task.date),
-//       title: task.title,
-//       message: task.message,
-//       file_id_list: [],
-//       file_name_list: [],
-//       status: status_list[index] || 0
-//     }
-  
-//     for (let i = 0; i < task.link.length; ++ i) {
-//       let img_path = path.join(__dirname, '../../public', task.link[i])
-//       if (!fs.existsSync(img_path)) {
-//         continue
+//   database.findList('postgraduate-task', 'files').then(async res => {
+//     let index = 0
+//     console.log(res[0])
+//     for (let file of res) {
+//       let file_path = path.join(__dirname, '../../dist/tasks_temp/', moment(file.date).format('YY-MM-DD'), file.filename)
+//       let dir = path.dirname(file_path)
+//       if (!fs.existsSync(dir)) {
+//         fs.mkdirSync(dir, {recursive: true})
 //       }
-//       // console.log(database.fileToBinary(image_buff))
-//       let {insertedId, file_name} = await database.uploadFile('postgraduate-task', 'files', img_path)
+
+//       let metadata = {
+//         _id: file._id,
+//         contentType: file.contentType,
+//         filename: file.filename,
+//         length: file.length,
+//         uploadDate: file.uploadDate
+//       }
   
-//       new_task.file_id_list.push(insertedId)
-//       new_task.file_name_list.push(task.file[i])
+//       fs.writeFileSync(file_path, file.data.buffer, metadata)
+//       index += 1
+//       console.log('write finish: ', index)
 //     }
-  
-//     await database.addOne('postgraduate-task', 'tasks', new_task)
-//     console.log('total: ', task_list.length, ', current: ', index + 1)
 //   })
 // })
 
+// database.initialize().then(() => {
+//   database.findList('postgraduate-task', 'tasks').then(async res => {
+//     console.log(res.length)
 
-// database.initialize().then(async () => {
-//   let task_list = fs.readFileSync(path.join(__dirname, '../../public/task_copy.json'), 'utf8')
-//   task_list = JSON.parse(task_list)
-//   // console.log(task_list[12])
-//   console.log('============================ total task length: ', task_list.length, ' ============================')
+//     for (let task of res) {
+//       for (let file_id of task.file_id_list) {
+//         let file = await database.getFile('postgraduate-task', 'files', file_id)
+//         let file_path = path.join(__dirname, '../../public/tasks_copy/', moment(task.date).format('YY-MM-DD'), file.metadata.filename)
+//         let dir = path.dirname(file_path)
+//         if (!fs.existsSync(dir)) {
+//           fs.mkdirSync(dir, {recursive: true})
+//         }
 
-//   for (let task of task_list) {
-//     for (let i = 0; i < task.file_name_list.length; ++ i) {
-//       let img_path = path.join(__dirname, '../../public/tasks_copy', moment(task.date).format('YY-MM-DD'), task.file_name_list[i])
-//       if (!fs.existsSync(img_path)) {
-//         continue
+//         fs.writeFileSync(file_path, file.fileData, file.metadata)
+//         console.log(file.fileData)
+//         console.log(file.metadata)
 //       }
-//       // console.log(database.fileToBinary(image_buff))
-//       let {insertedId, file_name} = await database.uploadFile('postgraduate-task', 'files', img_path)
-      
-//       task.file_id_list[i] = insertedId
-//       task.file_name_list[i] = file_name
-//       // task.file_id_list.push(insertedId)
-//       // new_task.file_name_list.push(task.file[i])
 //     }
-//     task.date = new Date(task.date)
-//     delete task._id
-  
-//     await database.addOne('postgraduate-task', 'tasks', task)
-//     console.log('total: ', task_list.length, ', current: ') 
-//   }
 
-//   // task_list.forEach((task, index) => {
-//   //   for (let i = 0; i < task.file_name_list.length; ++ i) {
-//   //     let img_path = path.join(__dirname, '../../public/tasks_copy', moment(task.date).format('YY-MM-DD'), task.file_name_list[i])
-//   //     if (!fs.existsSync(img_path)) {
-//   //       continue
-//   //     }
-//   //     // console.log(database.fileToBinary(image_buff))
-//   //     let {insertedId, file_name} = await database.uploadFile('postgraduate-task', 'files_test', img_path)
-      
-//   //     task.file_id_list[i] = insertedId
-//   //     task.file_name_list[i] = file_name
-//   //     // task.file_id_list.push(insertedId)
-//   //     // new_task.file_name_list.push(task.file[i])
-//   //   }
-//   //   task.date = new Date(task.date)
-//   //   delete task._id
-  
-//   //   await database.addOne('postgraduate-task', 'tasks_test', task)
-//   //   console.log('total: ', task_list.length, ', current: ', index + 1)
-//   // })
+//     let task_copy_path = path.join(__dirname, '../../public/task_copy.json')
+//     fs.writeFileSync(task_copy_path, JSON.stringify(res))
+//   })
+
 // })
 

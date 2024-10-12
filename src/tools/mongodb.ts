@@ -1,4 +1,5 @@
 import * as Realm from 'realm-web'
+import imageCompression from 'browser-image-compression'
 
 
 interface DBOptions {
@@ -93,6 +94,29 @@ class Database {
   }
 
   
+  async compressImage(file: File): Promise<File | null> {
+    try {
+      // Compression options
+      const options = {
+        maxSizeMB: 1,              // Maximum size in MB
+        maxWidthOrHeight: 1920,    // Maximum width or height
+        useWebWorker: true         // Use Web Worker for better performance
+      };
+
+      // Compress the image
+      const compressedFile = await imageCompression(file, options);
+
+      // Create a new File object with the compressed data
+      const compressedImage = new File([compressedFile], file.name, {
+        type: compressedFile.type
+      });
+
+      return compressedImage
+    } catch (error) {
+      console.error('Error in compression or upload:', error);
+    }
+    return null
+  }
   // convert File to Binary
   private async fileToBinary(file: File): Promise<Realm.BSON.Binary> {
     return new Promise((resolve, reject) => {
@@ -113,7 +137,11 @@ class Database {
   // upload a file
   async uploadFile(dbName: string, collectionName: string, file: File, metadata: object = {}): Promise<{insertedId: Realm.BSON.ObjectId, file_name: string}> {
     const collection = this.getCollection(dbName, collectionName)
-    const binary = await this.fileToBinary(file)
+    const compress_image = await this.compressImage(file)
+    if (compress_image == null) {
+      throw Error('compress image error')
+    }
+    const binary = await this.fileToBinary(compress_image)
     
     const document = {
       filename: file.name,
