@@ -142,7 +142,7 @@ function submit(submit_info: TaskType) {
                   <div class="submission-file-item" v-for="(file, index) in task.file_name_list" :key="index"
                                                   @click="displayImage(task.file_id_list[index])">{{ file }}</div>
                 </div>
-                <div class="submission-date">{{ moment(task.date).format('hh:mm:ss') }}</div>
+                <div class="submission-date">{{ moment(task.date).format('HH:mm:ss') }}</div>
                 <div :class="{'submission-status': true, 'submission-status-error': task.status == 3}"
                     :style="{'backgroundColor': task_status_color[task.status]}">
                   {{ task_status[task.status] }}
