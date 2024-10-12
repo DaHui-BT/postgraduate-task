@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onBeforeMount, reactive } from "vue";
+import { onBeforeMount, ref } from "vue"
 import type { TaskType } from '@/types/submission'
 import Database from "@/tools/mongodb"
 
@@ -12,14 +12,7 @@ onBeforeMount(async () => {
   await database.initialize()
 })
 
-const submit_info = reactive<TaskType>({
-  date: new Date(),
-  title: '',
-  message: '',
-  file_id_list: [],
-  file_name_list: [],
-  status: 0,
-})
+const submit_info = ref<TaskType>()
 
 function uploadData (e: Event) {
   //@ts-ignore
@@ -42,19 +35,23 @@ function uploadData (e: Event) {
     form_data.append('file', file)
     // save to backend
     database.uploadFile('postgraduate-task', 'files', file).then(res => {
-      submit_info.file_id_list?.push(res.insertedId)
-      submit_info.file_name_list?.push(res.file_name)
+      submit_info.value.file_id_list?.push(res.insertedId)
+      submit_info.value.file_name_list?.push(res.file_name)
     }).catch(err => {
       console.log(err)
     }).finally(() => {
-    emit('stop_loading')
+      emit('stop_loading')
     })
   }
 }
 
 function submit() {
-  submit_info.date = new Date()
-  emit('submit', submit_info)
+  emit('submit', submit_info.value)
+  // when submit clear input message
+  submit_info.value = {}
+  submit_info.value.status = 0
+  submit_info.value.file_id_list = []
+  submit_info.value.file_name_list = []
 }
 
 </script>

@@ -99,13 +99,14 @@ function submit(submit_info: TaskType) {
   is_submit_form_show.value = ! is_submit_form_show.value
 
   if (is_submit_form_show.value == false) {
-    if (submit_info.message == "" || submit_info.title == '') {
+    if (submit_info.message == null || submit_info.title == null || submit_info.message == "" || submit_info.title == '') {
       alert('Nothing to submit! The form should be completed!')
     } else {
       // submit the data
+      submit_info.date = new Date()
       database.addOne('postgraduate-task', 'tasks', submit_info)
+      load_data()
     }
-    load_data()
   }
 }
 
