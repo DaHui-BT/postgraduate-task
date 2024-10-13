@@ -1,6 +1,6 @@
 <script setup lang="ts">
-//@ts-ignore
-import SubmissionChart from "../components/SubmissionChart.vue"
+import SubmissionChart from "@/components/SubmissionChart.vue"
+
 </script>
 
 <template>
@@ -67,7 +67,8 @@ import SubmissionChart from "../components/SubmissionChart.vue"
 
 <style lang="scss" scoped>
 .home {
-  width: 900px;
+  max-width: 900px;
+  min-width: 350px;
   min-height: calc(100vh - 60px);
   margin: auto;
   padding: 10px 20px;
@@ -93,6 +94,7 @@ import SubmissionChart from "../components/SubmissionChart.vue"
   .contribute {
     margin: auto;
     margin-top: 30px;
+    overflow-x: auto;
   }
 }
 </style>

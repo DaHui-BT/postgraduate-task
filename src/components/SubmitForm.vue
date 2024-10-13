@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onBeforeMount, ref } from "vue"
+import { ref } from "vue"
 import type { TaskType } from '@/types/submission'
 import Database from "@/tools/mongodb"
 
@@ -7,10 +7,6 @@ import Database from "@/tools/mongodb"
 const emit = defineEmits(['submit', 'start_loading', 'stop_loading'])
 const prop = defineProps(['is_submit_form_show'])
 const database = new Database()
-
-onBeforeMount(async () => {
-  await database.initialize()
-})
 
 const submit_info = ref<TaskType>()
 

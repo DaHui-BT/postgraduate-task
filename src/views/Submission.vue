@@ -59,7 +59,6 @@ async function load_data() {
 
 onBeforeMount(async () => {
   is_loading_show.value = true
-  await database.initialize()
   await load_data()
 })
 
@@ -99,7 +98,9 @@ function submit(submit_info: TaskType) {
   is_submit_form_show.value = ! is_submit_form_show.value
 
   if (is_submit_form_show.value == false) {
-    if (submit_info.message == null || submit_info.title == null || submit_info.message == "" || submit_info.title == '') {
+    if (submit_info.message == null || submit_info.title == null
+         || submit_info.message.trim().length == 0
+         || submit_info.title.trim().length == 0) {
       alert('Nothing to submit! The form should be completed!')
     } else {
       // submit the data
@@ -139,7 +140,7 @@ function submit(submit_info: TaskType) {
             <div class="submission-func">
               <div class="submission-title">{{ task.title }}</div>
               <div class="submission-func-container">
-                <div class="submission-file" v-if="task.file_id_list">
+                <div class="submission-file" v-if="task.file_id_list.length > 0">
                   <div class="submission-file-item" v-for="(file, index) in task.file_name_list" :key="index"
                                                   @click="displayImage(task.file_id_list[index])">{{ file }}</div>
                 </div>
@@ -148,6 +149,8 @@ function submit(submit_info: TaskType) {
                     :style="{'backgroundColor': task_status_color[task.status]}">
                   {{ task_status[task.status] }}
                 </div>
+                <!-- <div class="submission-edit">Edit</div>
+                <div class="submission-delete">Delete</div> -->
               </div>
             </div>
             <div class="submission-message">{{ task.message }}</div>
@@ -163,8 +166,26 @@ function submit(submit_info: TaskType) {
 </template>
 
 <style lang="scss" scoped>
+
+@media screen and (min-width: 350px) and (max-width: 600px) {
+  .submission-func {
+    flex-direction: column;
+
+    .submission-func-container {
+      justify-content: space-between;
+    }
+  }
+}
+
+@media screen and (max-width: 900px){
+  .submission {
+    width: 95%;
+  }
+}
+
 .submission {
-  width: 900px;
+  max-width: 900px;
+  min-width: 350px;
   min-height: calc(100vh - 60px);
   margin: auto;
   padding: 10px 20px;
@@ -233,12 +254,13 @@ function submit(submit_info: TaskType) {
                 display: flex;
                 font-size: 13px;
                 color: #8c20ffac;
-                max-width: 400px;
+                max-width: 300px;
                 overflow-x: auto;
 
                 .submission-file-item {
                   padding: 3px 5px;
                   margin-right: 10px;
+                  height: 30px;
                   border: 1px solid #eee;
                   border-radius: 8px;
                   background-color: #00ffea53;

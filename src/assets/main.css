@@ -29,3 +29,12 @@ pre {
   white-space: pre-line;
 }
 
+input {
+  border: none;
+  outline: none;
+}
+
+button {
+  border: none;
+  background-color: transparent;
+}
