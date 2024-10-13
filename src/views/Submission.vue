@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { onBeforeMount, reactive, ref } from "vue"
+import { onBeforeMount, reactive, ref, getCurrentInstance } from "vue"
 import moment from 'moment'
 
 import Database from '@/tools/mongodb'
 import type { SubmissionType, TaskType, ObjectId } from '@/types/submission'
 
 import SubmitForm from "@/components/SubmitForm.vue"
+import SubmitTable from "@/components/SubmitTable.vue"
 import ImageBlock from "@/components/ImageBlock.vue"
 import Loading from "@/components/Loading.vue"
 
@@ -14,6 +15,7 @@ const is_image_block_show = ref<boolean>(false)
 const is_loading_show = ref<boolean>(false)
 const is_submit_form_show = ref<boolean>(false)
 
+const { proxy } = getCurrentInstance()
 const task_status = ['submit', 'checked', 'awarded', 'failed']
 const task_status_color = ['#895ef9fc', '#41d6ba', '#3ddf58', '#f95e85fc']
 const image_url = ref<null | string>(null)
@@ -26,7 +28,7 @@ function start_loading() { is_loading_show.value = true }
 function stop_loading() { is_loading_show.value = false }
 
 async function load_data() {
-  start_loading()
+  is_loading_show.value = true
 
   await database.findList('postgraduate-task', 'tasks').then(res => {
 
@@ -53,12 +55,12 @@ async function load_data() {
   }).catch(err => {
     console.log(err)
   }).finally(() => {
-    stop_loading()
+    is_loading_show.value = false
   })
 }
 
 onBeforeMount(async () => {
-  is_loading_show.value = true
+  // is_loading_show.value = true
   await load_data()
 })
 
@@ -111,6 +113,30 @@ function submit(submit_info: TaskType) {
   }
 }
 
+async function delete_task(task: TaskType) {
+  let val = confirm(`is ready to delete ${task.title}!`)
+  if (val) {
+    let token = prompt('input your delete token')
+    if (token != 'delete') {
+      return
+    }
+    is_loading_show.value = true
+    
+    await database.findOne('postgraduate-task', 'tasks', {_id: task._id}).then(async (res) => {
+      // console.log(res, res.file_id_list?.length > 0)
+      if (res.file_id_list?.length > 0) {
+        await database.deleteMany('postgraduate-task', 'files', {_id: {$in: res.file_id_list}})
+      }
+      await database.deleteOne('postgraduate-task', 'tasks', {_id: res._id})
+      load_data()
+    }).finally(() => {
+      is_loading_show.value = false
+    })
+  } else {
+    alert('operate already canceled!')
+  }
+}
+
 </script>
 
 <template>
@@ -119,12 +145,18 @@ function submit(submit_info: TaskType) {
     <image-block v-if="is_image_block_show" :image_url="image_url" @close="display_close"></image-block>
     <h1>This is the submission page</h1>
     
-    <submit-form :is_submit_form_show="is_submit_form_show"
+    <!-- <submit-form :is_submit_form_show="is_submit_form_show"
                  @submit="submit"
                  @start_loading="start_loading"
-                 @stop_loading="stop_loading"></submit-form>
+                 @stop_loading="stop_loading"></submit-form> -->
+    <div class="submit-button" @click="submit">submit</div>
+    <submit-table :is_submit_form_show="is_submit_form_show"
+                  @submit="submit"
+                  @start_loading="start_loading"
+                  @stop_loading="stop_loading"
+                  @hide_submit_form="is_submit_form_show = false"></submit-table>
 
-    <ul class="submission-content" v-if="submission_list.length > 0">
+    <ul class="submission-content" v-if="submission_list?.length > 0">
       <li class="submission-item" v-for="(submission, index) in submission_list" :key="submission.id">
         <div class="submission-collapse-container">
           <div class="submission-collapse" @click="toggle">{{ submission.id }}</div>
@@ -138,9 +170,9 @@ function submit(submit_info: TaskType) {
         <div class="submission-item-container" :style="{'display': index == 0 ? 'display' : 'none'}">
           <div class="submission-item-container-content" v-for="(task, inner_index) in submission.task_list" :key="inner_index">
             <div class="submission-func">
-              <div class="submission-title">{{ task.title }}</div>
+              <div class="submission-title" @click="delete_task(task)">{{ task.title }}</div>
               <div class="submission-func-container">
-                <div class="submission-file" v-if="task.file_id_list.length > 0">
+                <div class="submission-file" v-if="task.file_id_list?.length > 0">
                   <div class="submission-file-item" v-for="(file, index) in task.file_name_list" :key="index"
                                                   @click="displayImage(task.file_id_list[index])">{{ file }}</div>
                 </div>
@@ -154,7 +186,7 @@ function submit(submit_info: TaskType) {
               </div>
             </div>
             <div class="submission-message">{{ task.message }}</div>
-            <hr class="submission-line" v-if="inner_index != submission.task_list.length-1">
+            <hr class="submission-line" v-if="inner_index != submission.task_list?.length-1">
           </div>
         </div>
       </li>
@@ -193,6 +225,18 @@ function submit(submit_info: TaskType) {
   background-color: #fff;
   box-shadow: 0px 3px 10px #d2d2d2;
   margin-bottom: 30px;
+
+  
+  .submit-button {
+    display: inline-block;
+    padding: 5px 15px;
+    margin-bottom: 10px;
+    color: #fff;
+    font-weight: bold;;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #4452cb;
+  }
 
   .submission-content {
 

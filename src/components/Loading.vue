@@ -28,6 +28,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 100;
 
     .loading-spinner {
       border: 5px solid #3498db;
