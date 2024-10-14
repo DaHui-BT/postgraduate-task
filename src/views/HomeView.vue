@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import SubmissionChart from "@/components/SubmissionChart.vue"
 
 </script>
 
@@ -59,23 +58,11 @@ import SubmissionChart from "@/components/SubmissionChart.vue"
       <i>You should submit your completed work(maybe screenshrot or picture or word file) to the <strong>tasks</strong> directory.</i>
     </div>
 
-    <div class="contribute">
-      <submission-chart></submission-chart>
-    </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
 .home {
-  max-width: 900px;
-  min-width: 350px;
-  min-height: calc(100vh - 60px);
-  margin: auto;
-  padding: 10px 20px;
-  border-radius: 10px;
-  background-color: #fff;
-  box-shadow: 0px 3px 10px #d2d2d2;
-  margin-bottom: 30px;
 
   .describe {
     text-align: left;
@@ -89,12 +76,6 @@ import SubmissionChart from "@/components/SubmissionChart.vue"
         color: #666;
       }
     }
-  }
-
-  .contribute {
-    margin: auto;
-    margin-top: 30px;
-    overflow-x: auto;
   }
 }
 </style>

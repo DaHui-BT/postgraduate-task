@@ -209,23 +209,7 @@ async function delete_task(task: TaskType) {
   }
 }
 
-@media screen and (max-width: 900px){
-  .submission {
-    width: 95%;
-  }
-}
-
 .submission {
-  max-width: 900px;
-  min-width: 350px;
-  min-height: calc(100vh - 60px);
-  margin: auto;
-  padding: 10px 20px;
-  border-radius: 10px;
-  background-color: #fff;
-  box-shadow: 0px 3px 10px #d2d2d2;
-  margin-bottom: 30px;
-
   
   .submit-button {
     display: inline-block;

@@ -11,7 +11,7 @@ let username = ref<string>()
 let password = ref<string>()
 const database = new Database()
 
-async function login() {
+async function register() {
   if (username.value == null || password.value == null
       || username.value.trim().length == 0 || password.value.trim().length == 0) {
     alert('email and password must not be null')
@@ -19,47 +19,47 @@ async function login() {
   }
   
   proxy.$loading.show()
-
-  await database.connect(username.value, password.value).then(res => {
-    if (router.currentRoute.value.query['from'] != undefined) {
-      router.replace(router.currentRoute.value.query['from'].toString())
-    } else {
-      router.replace({path: '/'})
-    }
-  }).catch((err) => {
-    alert('username or password is error, please try again!')
+  await database.app.emailPasswordAuth.registerUser({
+    email: username.value,
+    password: password.value
+  }).then(res => {
+    router.push({
+      path: '/login'
+    })
+  }).catch(err => {
+    console.log(err, err.error)
   }).finally(() => {
     proxy.$loading.hide()
   })
 }
 
+
 window.onkeyup = (event) => {
   if (event.keyCode == 13) { // enter
-    login()
+    register()
   }
 }
-
 </script>
 
 <template>
-  <div class="login">
-    <div class="login-container">
-      <h2 class="login-title">Login</h2>
-      <input class="login-item" type="text" placeholder="email" v-model="username">
-      <input class="login-item" type="password" placeholder="password" v-model="password">
-      <p class="login-message"><span>don't have a account?</span> <a @click="() => $router.push('/register')">register</a></p>
-      <button class="login-button" @click="login">Login</button>
+  <div class="register">
+    <div class="register-container">
+      <h2 class="register-title">Register</h2>
+      <input class="register-item" type="text" placeholder="email" v-model="username">
+      <input class="register-item" type="password" placeholder="password" v-model="password">
+      <p class="register-message"><span>have a account?</span> <a @click="() => $router.push('/login')">login</a></p>
+      <button class="register-button" @click="register">Register</button>
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-.login {
+.register {
   height: 100vh;
   display: flex;
   align-items: center;
 
-  .login-container {
+  .register-container {
     margin: auto;
     display: flex;
     align-items: center;
@@ -70,7 +70,7 @@ window.onkeyup = (event) => {
     border-radius: 5px;
     box-shadow: 3px 3px 10px 0px #5353536d;
 
-    .login-message {
+    .register-message {
       width: 300px;
       margin-top: -20px;
       margin-bottom: 10px;
@@ -83,11 +83,11 @@ window.onkeyup = (event) => {
       }
     }
     
-    .login-title {
+    .register-title {
       margin-bottom: 30px;
     }
 
-    .login-item {
+    .register-item {
       padding: 10px 20px;
       width: 300px;
       height: 40px;
@@ -96,11 +96,11 @@ window.onkeyup = (event) => {
       border-radius: 5px;
     }
 
-    .login-item::placeholder {
+    .register-item::placeholder {
       color: #aaa;
     }
 
-    .login-button {
+    .register-button {
       width: 300px;
       height: 40px;
       color: #fff;

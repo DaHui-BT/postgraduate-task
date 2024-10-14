@@ -5,6 +5,8 @@ import { parse_task } from '@/tools/parser';
 import moment from 'moment'
 import { reactive, ref } from 'vue'
 
+const props = defineProps(['task_list', 'profile'])
+
 const dateData = reactive<{
     columns: number,
     title: string,
@@ -16,7 +18,7 @@ const dateData = reactive<{
   }[]>([])
 const submissionRecord = reactive([])
 const sliderValue = ref([0, 12])
-const profile = defineProps(['profile'])
+// const profile = 
 const monthCN = ['Jul', 'Aug', 'Sep',	'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul']
 
 function init () {
@@ -81,12 +83,11 @@ function init () {
 }
 
 function formatProblemData () {
-  let lines = loadFile('./task')
-  let task_list: SubmissionType[] = parse_task(lines)
+  let task_list: SubmissionType[] = props.task_list
   for (let task of task_list) {
     dateData.forEach(element => {
       for (let e of element.data) {
-        if (e.date.slice(2, e.date.length) == task.date) {
+        if (e.date.slice(2, e.date.length) == moment(task.date).format('YY-MM-DD')) {
           e.number ++;
         }
       }

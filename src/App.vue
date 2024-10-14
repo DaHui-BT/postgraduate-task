@@ -1,13 +1,13 @@
 <script setup lang="ts">
+import Container from '@/views/Container.vue'
 import Navbar from '@/components/Navbar.vue'
-
 
 </script>
 
 <template>
   <div class="app">
     <navbar v-if="$route.meta.showNavbar"></navbar>
-    <RouterView />
+    <container></container>
   </div>
 </template>
 

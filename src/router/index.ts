@@ -14,16 +14,22 @@ const router = createRouter({
       component: () => import('@/views/HomeView.vue'),
       meta: {
         showNavbar: true,
-        isNeedLogin: true
+        isNeedLogin: false
       }
     },
     {
       path: '/submission',
       name: 'submission',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import('@/views/Submission.vue'),
+      meta: {
+        showNavbar: true,
+        isNeedLogin: true
+      }
+    },
+    {
+      path: '/profile',
+      name: 'profile',
+      component: () => import('@/views/Profile.vue'),
       meta: {
         showNavbar: true,
         isNeedLogin: true
@@ -33,6 +39,24 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: () => import('@/views/Login.vue'),
+      meta: {
+        showNavbar: false,
+        isNeedLogin: false
+      }
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: () => import('@/views/Register.vue'),
+      meta: {
+        showNavbar: false,
+        isNeedLogin: false
+      }
+    },
+    {
+      path: '/confirm',
+      name: 'confirm',
+      component: () => import('@/views/Confirm.vue'),
       meta: {
         showNavbar: false,
         isNeedLogin: false

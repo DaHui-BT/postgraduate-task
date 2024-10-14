@@ -59,6 +59,11 @@ class Database {
     return this.databse.db(dbName).collection(collectionName)
   }
 
+  async count(dbName: string, collectionName: string, filter: object = {}): Promise<number> {
+    const collection = await this.getCollection(dbName, collectionName)
+    return await collection.count(filter)
+  }
+
   async findList(dbName: string, collectionName: string, filter: object = {}): Promise<Array<object> | null> {
     const collection = await this.getCollection(dbName, collectionName)
     return await collection.find(filter)
