@@ -65,6 +65,12 @@ function edit_task() {
 }
 
 function delete_task() {
+  let val = confirm(`is ready to delete task!`)
+  if (!val) {
+    alert('operate already canceled!')
+    return
+  }
+
   // is_show_screen_mask.value = true
   proxy.$loading.show()
   database.deleteOne('postgraduate-task', 'task', {name: {$ne: ''}}).then(res => {
