@@ -5,7 +5,7 @@ import { parse_task } from '@/tools/parser';
 import moment from 'moment'
 import { reactive, ref } from 'vue'
 
-const props = defineProps(['task_list', 'profile'])
+const props = defineProps(['submission_list', 'profile'])
 
 const dateData = reactive<{
     columns: number,
@@ -83,8 +83,8 @@ function init () {
 }
 
 function formatProblemData () {
-  let task_list: SubmissionType[] = props.task_list
-  for (let task of task_list) {
+  let submission_list: SubmissionType[] = props.submission_list
+  for (let task of submission_list) {
     dateData.forEach(element => {
       for (let e of element.data) {
         if (e.date.slice(2, e.date.length) == moment(task.date).format('YY-MM-DD')) {

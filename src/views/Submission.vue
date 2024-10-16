@@ -30,7 +30,7 @@ function stop_loading() { is_loading_show.value = false }
 async function load_data() {
   is_loading_show.value = true
 
-  await database.findList('postgraduate-task', 'tasks').then(res => {
+  await database.findList('postgraduate-task', 'submission').then(res => {
 
     task_list.splice(0, task_list.length)
     submission_list.splice(0, submission_list.length)
@@ -107,7 +107,7 @@ function submit(submit_info: TaskType) {
     } else {
       // submit the data
       submit_info.date = new Date()
-      database.addOne('postgraduate-task', 'tasks', submit_info)
+      database.addOne('postgraduate-task', 'submission', submit_info)
       load_data()
     }
   }
@@ -122,12 +122,12 @@ async function delete_task(task: TaskType) {
     }
     is_loading_show.value = true
     
-    await database.findOne('postgraduate-task', 'tasks', {_id: task._id}).then(async (res) => {
+    await database.findOne('postgraduate-task', 'submission', {_id: task._id}).then(async (res) => {
       // console.log(res, res.file_id_list?.length > 0)
       if (res.file_id_list?.length > 0) {
         await database.deleteMany('postgraduate-task', 'files', {_id: {$in: res.file_id_list}})
       }
-      await database.deleteOne('postgraduate-task', 'tasks', {_id: res._id})
+      await database.deleteOne('postgraduate-task', 'submission', {_id: res._id})
       load_data()
     }).finally(() => {
       is_loading_show.value = false

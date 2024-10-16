@@ -14,7 +14,7 @@ class Database {
     app_id: 'postgraduate-task_app-cgoisax',
     cluster: 'mongodb-atlas',
     database: 'postgraduate-task',
-    collection: 'tasks'
+    collection: 'submission'
   }
   
   static instance: Database
