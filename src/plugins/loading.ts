@@ -1,5 +1,5 @@
 import { type App, createApp, h } from "vue"
-import Loading from "@/components/Loading.vue"
+import Loading from "@/plugins/templates/Loading.vue"
 
 
 export default {

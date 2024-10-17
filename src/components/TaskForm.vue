@@ -6,6 +6,8 @@ import type { TaskType } from '@/types/task'
 
 import ScreenMask from "@/components/ScreenMask.vue"
 import FormTable from '@/components/FormTable.vue'
+import PtInput from '@/components/PTInput.vue'
+import PtButton from '@/components/PTButton.vue'
 
 
 const emit = defineEmits(['close', 'show'])
@@ -19,6 +21,7 @@ let props = defineProps({
 const { proxy } = getCurrentInstance()
 const database = new Database()
 const form_list = ref<TaskType>({
+  user_id: database.user.id,
   task_list: [{
     name: '',
     describe: ''
@@ -27,7 +30,7 @@ const form_list = ref<TaskType>({
 
 onMounted(() => {
   proxy.$loading.show()
-  database.findOne('postgraduate-task', 'task').then(res => {
+  database.findOne('postgraduate-task', 'task', { user_id: { $eq: database.user.id} }).then(res => {
     if (res != null) {
       form_list.value = res
     }
@@ -37,15 +40,18 @@ onMounted(() => {
 
 })
 
-function formAdd() {
+function taskAdd() {
   form_list.value.task_list.push({
     name: '',
     describe: ''
   })
 }
 
+function taskDelete(index: number) {
+  form_list.value.task_list.splice(index, 1)
+}
+
 function submitForm() {
-  console.log(form_list)
   for (let form of form_list.value.task_list) {
     if (form.name.trim().length == 0 || form.describe.trim().length == 0) {
       alert('name or describe must not be null')
@@ -57,7 +63,7 @@ function submitForm() {
   proxy.$loading.show()
   if (props.is_update) {
     database.updateOne('postgraduate-task', 'task', {_id: {$eq: form_list.value._id}}, form_list.value).then(res => {
-      alert('update success')
+      proxy.$notification.show('Success', 'update task successfully!')
       closeForm()
     }).finally(() => {
       proxy.$loading.hide()
@@ -65,14 +71,20 @@ function submitForm() {
   } else {
     database.addOne('postgraduate-task', 'task', form_list.value).then(res => {
       console.log(res)
-      alert('submit success')
+      // alert('submit success')
+      proxy.$notification.show('Success', 'submit task successfully!')
       closeForm()
     }).catch(err => {
       console.log(err)
+      proxy.$notification.show('Error', 'update task error!')
     }).finally(() => {
       proxy.$loading.hide()
     })
   }
+
+  database.findOne('postgraduate-task', 'task', { user_id: { $eq: database.user.id} }).then(res => {
+    form_list.value = res
+  })
 }
 
 function closeForm() {
@@ -84,15 +96,21 @@ function closeForm() {
 
 <template>
   <screen-mask>
-    <form-table @close="closeForm" @submit="submitForm">
-      <ol class="task-form">
-        <li class="task-form-item" v-for="(form, index) in form_list.task_list" :key="form">
-          <span class="task-form-item-number">{{ index + 1 }}.</span>
-          <input class="task-form-input task-form-input-name" placeholder="task name" v-model="form.name">
-          <input class="task-form-input" placeholder="task describe" v-model="form.describe">
-          <button class="task-form-add" @click="formAdd">+</button>
-        </li>
-      </ol>
+    <form-table @close="closeForm">
+      <template #form>
+        <ol class="task-form">
+          <li class="task-form-item" v-for="(form, index) in form_list.task_list" :key="form">
+            <span class="task-form-item-number">{{ index + 1 }}.</span>
+            <pt-input class="task-form-input" width="150px" v-model="form.name" placeholder="name"></pt-input>
+            <pt-input class="task-form-input" v-model="form.describe" placeholder="describe"></pt-input>
+            <pt-button type="danger" plain circle @click="taskDelete(index)">-</pt-button>
+          </li>
+        </ol>
+      </template>
+      <template #button>
+        <pt-button class="task-form-button" type="primary" @click="submitForm">Submit</pt-button>
+        <pt-button class="task-form-button" @click="taskAdd">Add</pt-button>
+      </template>
     </form-table>
   </screen-mask>
 </template>
@@ -109,6 +127,8 @@ function closeForm() {
   border-radius: 5px;
 
   .task-form-item {
+    display: flex;
+    align-items: center;
     margin-bottom: 10px;
 
     .task-form-item-number {
@@ -118,23 +138,11 @@ function closeForm() {
 
     .task-form-input {
       margin-right: 5px;
-      padding: 5px 10px;
-      border: 1px solid #66e3be;
-      border-radius: 5px;
-    }
-
-    .task-form-input-name {
-      width: 100px;
-    }
-
-    .task-form-add {
-      padding: 5px 9px;
-      color: #fff;
-      font-weight: bold;
-      // background-color: rgba(213, 140, 37, 0.978);
-      background-color: #66e3be;
-      border-radius: 50%;
     }
   }
+}
+
+.task-form-button {
+  margin-left: 10px;
 }
 </style>

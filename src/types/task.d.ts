@@ -3,6 +3,7 @@ import type { BSON } from "realm-web"
 
 interface TaskType {
   _id?: BSON.ObjectId,
+  user_id?: BSON.ObjectId,
   date: Date,
   task_list: {
     name: string,

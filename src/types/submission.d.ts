@@ -4,6 +4,7 @@ import { BSON } from "realm-web"
 
 interface SubmissionType {
   _id?: BSON.ObjectId,
+  user_id?: BSON.ObjectId,
   date: Date,
   title: string,
   message: string,

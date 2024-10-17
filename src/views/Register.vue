@@ -58,13 +58,14 @@ window.onkeyup = (event) => {
   height: 100vh;
   display: flex;
   align-items: center;
+  justify-content: space-around;
 
   .register-container {
     margin: auto;
     display: flex;
     align-items: center;
     flex-direction: column;
-    width: 400px;
+    width: 350px;
     padding: 40px 30px;
     background-color: #fff;
     border-radius: 5px;

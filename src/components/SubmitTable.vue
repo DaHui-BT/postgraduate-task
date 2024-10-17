@@ -9,6 +9,7 @@ const prop = defineProps(['is_submit_form_show'])
 const database = new Database()
 
 const submit_info = ref<TaskType>({
+  user_id: database.user.id,
   title: '',
   message: '',
   status: 0,

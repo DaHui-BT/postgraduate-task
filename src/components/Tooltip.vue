@@ -50,7 +50,7 @@ function hideTip() {
   position: absolute;
   bottom: 100%;
   left: 100%;
-  transform: translateX(-50%);
+  transform: translateX(-90%);
   padding: 8px;
   border-radius: 4px;
   white-space: nowrap;
