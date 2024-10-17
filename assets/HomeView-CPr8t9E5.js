@@ -1,0 +1,15 @@
+import{_ as t,c as a,o as s,a as e}from"./index-VWLPA4N7.js";const i={},o={class:"home"},l=e(`<div class="describe" data-v-69611226><h1 data-v-69611226>Postgraduate Task</h1><p data-v-69611226>You need to submit your completed work to this warehouse, and when you complete the specified task, you will receive the target reward.</p><p data-v-69611226>This repository will show the completion status of your tasks, so that you can clearly understand what you have done.</p><h2 data-v-69611226>Tasks:</h2><ol class="task-list" data-v-69611226><li class="task-list-item" data-v-69611226>Advance Math: 10 pages / day</li><li class="task-list-item" data-v-69611226>Probability theory: 4 pages / day</li><li class="task-list-item" data-v-69611226>Linear algebra: 5 pages / day</li><li class="task-list-item" data-v-69611226>1000 Questions finish after listening the course: 1 course / day</li><li class="task-list-item" data-v-69611226>660 finish after listening the course: 1 course / day</li><li class="task-list-item" data-v-69611226>Exercise book after listening the course: 10pages / day</li><li class="task-list-item" data-v-69611226>Mr Wu Teaching material: course / day</li><li class="task-list-item" data-v-69611226>English words: 2 units / day</li><li class="task-list-item" data-v-69611226>English reading: 2 pieces / day</li><li class="task-list-item" data-v-69611226>Network course: 2 course / day</li><li class="task-list-item" data-v-69611226>Network book: 20 pages / day</li><li class="task-list-item" data-v-69611226>Software engineering book: 10 pages / day</li></ol><h2 data-v-69611226>Usage:</h2><p data-v-69611226>1. In the first time you should run the following command in your project root directory to get the lastest tasks:</p><pre data-v-69611226>        git pull origin main
+      </pre><p data-v-69611226>2. You should submit your completed work to the tasks directory.</p><p data-v-69611226>3. After you have finished your tasks, you should the following command to submit you works:</p><pre data-v-69611226>        # store in local storage
+        git add .
+
+        # submit to the local storage
+        git commit -m &quot;submit: describe about this commit&quot;
+
+        # push to the remote(I will check your commit in the remote)
+        git push origin main
+      </pre><p data-v-69611226>4. You can use the following commands to verify the submit is success or not:</p><pre data-v-69611226>        # this command will display the files changed but not add/commit
+        git status
+
+        # this command will display your commit logs
+        git log
+      </pre><p data-v-69611226>If you want to see more about git, the website you can click: <a target="_blank" href="https://gitee.com/progit/" data-v-69611226>https://gitee.com/progit/</a></p><i data-v-69611226>You should submit your completed work(maybe screenshrot or picture or word file) to the <strong data-v-69611226>tasks</strong> directory.</i></div>`,1),r=[l];function d(c,n){return s(),a("div",o,r)}const h=t(i,[["render",d],["__scopeId","data-v-69611226"]]);export{h as default};
