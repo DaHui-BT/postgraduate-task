@@ -118,6 +118,10 @@ function submit() {
       database.addOne('postgraduate-task', 'submission', submission_info).then(() => {
         proxy?.$notification.show('Success', 'add submission successfully!')
         load_data()
+        submission_info.file_id_list = []
+        submission_info.file_name_list = []
+        submission_info.message = ''
+        submission_info.title = ''
       })
     }
   }
@@ -137,6 +141,7 @@ async function delete_task(submission: SubmissionType) {
         database.deleteMany('postgraduate-task', 'files', {_id: {$in: res.file_id_list}})
       }
       if (res) database.deleteOne('postgraduate-task', 'submission', {_id: res._id})
+      load_data()
     }).finally(() => {
       proxy?.$loading.hide()
     })
