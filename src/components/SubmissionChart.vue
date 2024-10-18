@@ -91,7 +91,7 @@ function formatProblemData () {
           e.number ++;
         }
       }
-    });
+    })
   }
   let submissionRecord = {}
   // let OIProblems = rofile.oi_problems_status.problems || {}

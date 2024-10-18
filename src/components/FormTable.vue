@@ -34,8 +34,8 @@ function cancel() {
     <slot name="form"></slot>
     <div class="form-button-container">
       <slot name="button">
-        <button class="form-button form-button-submit" @click="submit">{{ submit_text }}</button>
-        <button class="form-button form-button-cancel" @click="cancel">{{ cancel_text }}</button>
+        <pt-button class="form-button-item form-button-submit" type="primary" @click="submit">{{ submit_text }}</pt-button>
+        <pt-button class="form-button-item form-button-cancel" @click="cancel">{{ cancel_text }}</pt-button>
       </slot>
     </div>
   </div>
@@ -64,22 +64,10 @@ function cancel() {
   }
 
   .form-button-container {
+    display: flex;
 
-    .form-button {
-      width: 100%;
-      padding: 10px 20px;
-      margin-top: 10px;
-      border-radius: 5px;
-      border: 1px solid #dcdfe6;
-      color: #666;
-      font-weight: bold;
-    }
-
-    .form-button:hover {
-      color: #409eff;
-      border-color: #c6e2ff;
-      background-color: #ecf5ff;
-      transition: .2s;
+    .form-button-item {
+      margin: 10px;
     }
   }
 

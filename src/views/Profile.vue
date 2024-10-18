@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { ref, reactive, getCurrentInstance, onMounted } from 'vue'
+import moment from 'moment'
 
 import Database from '@/tools/mongodb'
 import type { TaskType } from '@/types/task'
@@ -29,10 +30,10 @@ onMounted(() => {
   }).finally(() => {
     proxy.$loading.hide()
   })
-
+  console.log(moment().format('YYYY-MM-DD'), moment.utc().format('YYYY-MM-DD: hh-mm-ss'))
   database.count('postgraduate-task', 'submission', {
     date: {
-      $gt: new Date(new Date().toLocaleDateString())
+      $gte: new Date(moment().format('YYYY-MM-DD'))
     },
     user_id: {
       $eq: database.user.id
@@ -78,7 +79,7 @@ function delete_task() {
 
   // is_show_screen_mask.value = true
   proxy.$loading.show()
-  database.deleteOne('postgraduate-task', 'task', {name: {$ne: ''}}).then(res => {
+  database.deleteOne('postgraduate-task', 'task', {name: {$ne: ''}, user_id: {$eq: database.user.id}}).then(res => {
     // alert('delete success!')
     proxy.$notification.show('Success', 'delete task successfully!')
     database.findOne('postgraduate-task', 'task', {user_id: {$eq: database.user.id}}).then(res => {

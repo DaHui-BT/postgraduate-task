@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import ScreenMask from '@/components/ScreenMask.vue'
+
 const props = defineProps(['image_url'])
 const emit = defineEmits(['close'])
 
@@ -9,21 +11,16 @@ function close() {
 </script>
 
 <template>
-  <div class="image-block">
-    <div class="close" @click="close">X</div>
-    <img :src="props.image_url" alt="">
-  </div>
+  <screen-mask>
+    <div class="image-block">
+      <div class="close" @click="close">X</div>
+      <img :src="props.image_url" alt="">
+    </div>
+  </screen-mask>
 </template>
 
 <style lang="scss" scoped>
   .image-block {
-    position: fixed;
-    width: 100%;
-    height: 100vh;
-    top: 0;
-    left: 0;
-    background-color: #6662628a;
-
     display: flex;
     align-items: center;
     flex-direction: column;

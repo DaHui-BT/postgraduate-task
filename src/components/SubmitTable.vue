@@ -64,7 +64,7 @@ function close() {
 </script>
 
 <template>
-  <div class="submit-table" v-if="is_submit_form_show">
+  <div class="submit-table">
     <div class="submit-container">
       <div class="submit-container-close" @click="close">X</div>
       <h2 class="submit-container-title">Submit</h2>
@@ -88,14 +88,14 @@ function close() {
 
 <style lang="scss" scoped>
 .submit-table {
-  position: fixed;
-  top: 0;
-  left: 0;
-  background-color: #3b3b3b94;
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  align-items: center;
+  // position: fixed;
+  // top: 0;
+  // left: 0;
+  // background-color: #3b3b3b94;
+  // width: 100%;
+  // height: 100vh;
+  // display: flex;
+  // align-items: center;
 
   .submit-container {
     position: relative;

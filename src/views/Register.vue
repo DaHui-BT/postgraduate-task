@@ -47,7 +47,7 @@ window.onkeyup = (event) => {
       <h2 class="register-title">Register</h2>
       <input class="register-item" type="text" placeholder="email" v-model="username">
       <input class="register-item" type="password" placeholder="password" v-model="password">
-      <p class="register-message"><span>have a account?</span> <a @click="() => $router.push('/login')">login</a></p>
+      <p class="register-message"><span>have an account?</span> <a @click="() => $router.push('/login')">login</a></p>
       <button class="register-button" @click="register">Register</button>
     </div>
   </div>

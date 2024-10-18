@@ -1,10 +1,13 @@
 <script lang="ts" setup>
+import ScreenMask from '@/components/ScreenMask.vue'
 </script>
 
 <template>
-  <div class="loading">
-    <div class="loading-spinner"></div>
-  </div>
+  <screen-mask>
+    <div class="loading">
+      <div class="loading-spinner"></div>
+    </div>
+  </screen-mask>
 </template>
 
 <style lang="scss" scoped>
@@ -18,17 +21,10 @@
   }
 
   .loading {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    background-color: #6662628a;
-
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 100;
+    // z-index: 100;
 
     .loading-spinner {
       border: 5px solid #3498db;

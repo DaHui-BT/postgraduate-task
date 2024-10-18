@@ -5,10 +5,13 @@ import moment from 'moment'
 import Database from '@/tools/mongodb'
 import type { SubmissionType, TaskType, ObjectId } from '@/types/submission'
 
-import SubmitForm from "@/components/SubmitForm.vue"
 import SubmitTable from "@/components/SubmitTable.vue"
 import ImageBlock from "@/components/ImageBlock.vue"
-import Loading from "@/components/Loading.vue"
+import PtButton from '@/components/PTButton.vue'
+import ScreenMask from '@/components/ScreenMask.vue'
+import FormTable from '@/components/FormTable.vue'
+import PtInput from '@/components/PTInput.vue'
+import PtUpload from '@/components/PTUpload.vue'
 
 
 const is_image_block_show = ref<boolean>(false)
@@ -20,9 +23,15 @@ const task_status = ['submit', 'checked', 'awarded', 'failed']
 const task_status_color = ['#895ef9fc', '#41d6ba', '#3ddf58', '#f95e85fc']
 const image_url = ref<null | string>(null)
 
+const database = new Database()
 const submission_list = reactive<SubmissionType[]>([])
 const task_list = reactive<TaskType[]>([])
-const database = new Database()
+const submission_info = reactive<SubmissionType>({
+  user_id: database.user.id,
+  file_id_list: [],
+  file_name_list: [],
+  status: 0
+})
 
 function start_loading() { is_loading_show.value = true }
 function stop_loading() { is_loading_show.value = false }
@@ -81,12 +90,12 @@ function calNumber(info: TaskType[], v: number) {
 }
 
 function displayImage(imageId: ObjectId) {
-  is_image_block_show.value = true
-  start_loading()
+  proxy.$loading.show()
   image_url.value = null
   database.getImageUrl('postgraduate-task', 'files', imageId).then(res => {
     image_url.value = res
-    stop_loading()
+    proxy.$loading.hide()
+    is_image_block_show.value = true
   })
 }
 
@@ -96,19 +105,22 @@ function display_close() {
   stop_loading()
 }
 
-function submit(submit_info: TaskType) {
+function submit() {
   is_submit_form_show.value = ! is_submit_form_show.value
 
   if (is_submit_form_show.value == false) {
-    if (submit_info.message == null || submit_info.title == null
-         || submit_info.message.trim().length == 0
-         || submit_info.title.trim().length == 0) {
+    console.log(submission_info)
+    if (submission_info.message == null || submission_info.title == null
+         || submission_info.message.trim().length == 0
+         || submission_info.title.trim().length == 0) {
       alert('Nothing to submit! The form should be completed!')
     } else {
       // submit the data
-      submit_info.date = new Date()
-      database.addOne('postgraduate-task', 'submission', submit_info)
-      load_data()
+      submission_info.date = new Date()
+      database.addOne('postgraduate-task', 'submission', submission_info).then(() => {
+        proxy.$notification.show('Success', 'add submission successfully!')
+        load_data()
+      })
     }
   }
 }
@@ -120,41 +132,55 @@ async function delete_task(task: TaskType) {
     if (token != 'delete') {
       return
     }
-    is_loading_show.value = true
+    proxy.$loading.show()
     
     await database.findOne('postgraduate-task', 'submission', {_id: task._id}).then(async (res) => {
-      // console.log(res, res.file_id_list?.length > 0)
       if (res.file_id_list?.length > 0) {
         await database.deleteMany('postgraduate-task', 'files', {_id: {$in: res.file_id_list}})
       }
       await database.deleteOne('postgraduate-task', 'submission', {_id: res._id})
       load_data()
     }).finally(() => {
-      is_loading_show.value = false
+      proxy.$loading.hide()
     })
   } else {
-    alert('operate already canceled!')
+    proxy.$notification.show('Cancel', 'operate already canceled!')
   }
 }
 
+function uploadFile(files: Array<File>) {
+  proxy.$loading.show()
+  for (let file of files) {
+    // save to backend
+    database.uploadFile('postgraduate-task', 'files', file).then(res => {
+      console.log(res)
+      submission_info.file_id_list?.push(res.insertedId)
+      submission_info.file_name_list?.push(res.file_name)
+    }).catch(err => {
+      console.log(err)
+    }).finally(() => {
+      proxy.$loading.hide()
+    })
+  }
+}
 </script>
 
 <template>
   <div class="submission">
-    <loading v-if="is_loading_show"></loading>
     <image-block v-if="is_image_block_show" :image_url="image_url" @close="display_close"></image-block>
     <h1>This is the submission page</h1>
     
-    <!-- <submit-form :is_submit_form_show="is_submit_form_show"
-                 @submit="submit"
-                 @start_loading="start_loading"
-                 @stop_loading="stop_loading"></submit-form> -->
-    <div class="submit-button" @click="submit">submit</div>
-    <submit-table :is_submit_form_show="is_submit_form_show"
-                  @submit="submit"
-                  @start_loading="start_loading"
-                  @stop_loading="stop_loading"
-                  @hide_submit_form="is_submit_form_show = false"></submit-table>
+    <pt-button class="submit-button" type="primary" @click="submit">submit</pt-button>
+
+    <screen-mask v-if="is_submit_form_show">
+      <form-table @close="() => is_submit_form_show = false" @submit="submit">
+        <template #form>
+          <pt-input placeholder="title" v-model="submission_info.title"></pt-input>
+          <pt-upload @on-change="uploadFile" accept=".png, .jpg, .jpeg"></pt-upload>
+          <pt-input placeholder="message" v-model="submission_info.message"></pt-input>
+        </template>
+      </form-table>
+    </screen-mask>
 
     <ul class="submission-content" v-if="submission_list?.length > 0">
       <li class="submission-item" v-for="(submission, index) in submission_list" :key="submission.id">
@@ -181,8 +207,6 @@ async function delete_task(task: TaskType) {
                     :style="{'backgroundColor': task_status_color[task.status]}">
                   {{ task_status[task.status] }}
                 </div>
-                <!-- <div class="submission-edit">Edit</div>
-                <div class="submission-delete">Delete</div> -->
               </div>
             </div>
             <div class="submission-message">{{ task.message }}</div>
@@ -210,17 +234,6 @@ async function delete_task(task: TaskType) {
 }
 
 .submission {
-  
-  .submit-button {
-    display: inline-block;
-    padding: 5px 15px;
-    margin-bottom: 10px;
-    color: #fff;
-    font-weight: bold;;
-    border-radius: 5px;
-    cursor: pointer;
-    background-color: #4452cb;
-  }
 
   .submission-content {
 

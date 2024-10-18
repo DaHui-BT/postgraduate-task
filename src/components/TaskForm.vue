@@ -48,6 +48,10 @@ function taskAdd() {
 }
 
 function taskDelete(index: number) {
+  if (form_list.value.task_list.length == 1) {
+    alert('at least one task')
+    return
+  }
   form_list.value.task_list.splice(index, 1)
 }
 
@@ -132,7 +136,7 @@ function closeForm() {
     margin-bottom: 10px;
 
     .task-form-item-number {
-      color: #66e3be;
+      color: #6c6f6e;
       margin-right: 5px;
     }
 
