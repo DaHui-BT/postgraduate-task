@@ -1,24 +1,22 @@
 <script setup lang="ts">
-//@ts-nocheck
-import { loadFile } from '@/tools/file_utils';
-import { parse_task } from '@/tools/parser';
 import moment from 'moment'
 import { reactive, ref } from 'vue'
+
+import type { SubmissionType } from '@/types/submission'
 
 const props = defineProps(['submission_list', 'profile'])
 
 const dateData = reactive<{
-    columns: number,
-    title: string,
-    ifSwitchMonth: boolean,
-    data: {
-          number: number,
-          date: string
-        }[]
+  columns: number,
+  title: string,
+  ifSwitchMonth: boolean,
+  data: {
+    number: number,
+    date: string
+  }[]
   }[]>([])
 const submissionRecord = reactive([])
 const sliderValue = ref([0, 12])
-// const profile = 
 const monthCN = ['Jul', 'Aug', 'Sep',	'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul']
 
 function init () {
@@ -192,8 +190,6 @@ function sliderChange (val: []) {
     height: 180px;
     background-color: #fff;
     margin: auto;
-    // margin-top: 20px;
-    // padding: 0px 0;
     font-size: 12px;
  
     .calendar {

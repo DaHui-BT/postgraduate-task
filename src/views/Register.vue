@@ -1,10 +1,13 @@
 <script lang="ts" setup>
-import { ref, getCurrentInstance } from 'vue'
+import { ref, getCurrentInstance, type ComponentPublicInstance } from 'vue'
 import { useRouter } from 'vue-router'
 import Database from '@/tools/mongodb'
 
 
-const {proxy} = getCurrentInstance()
+const proxy: ComponentPublicInstance | undefined | null = getCurrentInstance()?.proxy
+if (proxy == null || proxy == undefined) {
+  throw Error('Server, please try later')
+}
 const router = useRouter()
 
 let username = ref<string>()
@@ -18,18 +21,19 @@ async function register() {
     return
   }
   
-  proxy.$loading.show()
-  await database.app.emailPasswordAuth.registerUser({
+  proxy?.$loading.show()
+  await database.app?.emailPasswordAuth.registerUser({
     email: username.value,
     password: password.value
-  }).then(res => {
+  }).then(() => {
     router.push({
       path: '/login'
     })
   }).catch(err => {
+    proxy?.$notification.show('Error', err.error)
     console.log(err, err.error)
   }).finally(() => {
-    proxy.$loading.hide()
+    proxy?.$loading.hide()
   })
 }
 

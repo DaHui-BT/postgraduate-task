@@ -18,8 +18,8 @@ class Database {
   }
   
   static instance: Database
-  private app: Realm.App | null = null
-  private user: Realm.User | null = null
+  app: Realm.App | null = null
+  user: Realm.User | null = null
   private databse: Realm.Services.MongoDB | null = null
   isLogin: boolean = false
 
@@ -64,18 +64,18 @@ class Database {
     return await collection.count(filter)
   }
 
-  async findList(dbName: string, collectionName: string, filter: object = {}): Promise<Array<object> | null> {
+  async findList<T>(dbName: string, collectionName: string, filter: object = {}): Promise<Array<T> | null> {
     const collection = await this.getCollection(dbName, collectionName)
     return await collection.find(filter)
   }
 
   // Single document operations
-  async findOne(dbName: string, collectionName: string, filter: object = {}): Promise<Document | null> {
+  async findOne<T>(dbName: string, collectionName: string, filter: object = {}): Promise<T | null> {
     const collection = await this.getCollection(dbName, collectionName)
     return await collection.findOne(filter)
   }
 
-  async findMany(dbName: string, collectionName: string, filter: object = {}): Promise<Document[]> {
+  async findMany<T>(dbName: string, collectionName: string, filter: object = {}): Promise<T[]> {
     const collection = await this.getCollection(dbName, collectionName)
     return await collection.find(filter)
   }

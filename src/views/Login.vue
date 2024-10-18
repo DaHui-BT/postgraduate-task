@@ -1,10 +1,13 @@
 <script lang="ts" setup>
-import { ref, getCurrentInstance } from 'vue'
+import { ref, getCurrentInstance, type ComponentPublicInstance } from 'vue'
 import { useRouter } from 'vue-router'
 import Database from '@/tools/mongodb'
 
 
-const {proxy} = getCurrentInstance()
+const proxy: ComponentPublicInstance | undefined | null = getCurrentInstance()?.proxy
+if (proxy == null || proxy == undefined) {
+  throw Error('Server, please try later')
+}
 const router = useRouter()
 
 let username = ref<string>()
@@ -18,7 +21,7 @@ async function login() {
     return
   }
   
-  proxy.$loading.show()
+  proxy?.$loading.show()
 
   await database.connect(username.value, password.value).then(res => {
     if (router.currentRoute.value.query['from'] != undefined) {
@@ -29,7 +32,7 @@ async function login() {
   }).catch((err) => {
     alert('username or password is error, please try again!')
   }).finally(() => {
-    proxy.$loading.hide()
+    proxy?.$loading.hide()
   })
 }
 

@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { onBeforeMount, reactive, ref, getCurrentInstance } from "vue"
+import { onBeforeMount, reactive, ref, getCurrentInstance, type ComponentPublicInstance } from "vue"
 import moment from 'moment'
 
 import Database from '@/tools/mongodb'
-import type { SubmissionType, TaskType, ObjectId } from '@/types/submission'
+import type { SubmissionType, SubmissionListType, ObjectId } from '@/types/submission'
 
-import SubmitTable from "@/components/SubmitTable.vue"
 import ImageBlock from "@/components/ImageBlock.vue"
 import PtButton from '@/components/PTButton.vue'
 import ScreenMask from '@/components/ScreenMask.vue'
@@ -15,32 +14,33 @@ import PtUpload from '@/components/PTUpload.vue'
 
 
 const is_image_block_show = ref<boolean>(false)
-const is_loading_show = ref<boolean>(false)
 const is_submit_form_show = ref<boolean>(false)
 
-const { proxy } = getCurrentInstance()
+const proxy: ComponentPublicInstance | undefined | null = getCurrentInstance()?.proxy
+if (proxy == null || proxy == undefined) {
+  throw Error('Server, please try later')
+}
 const task_status = ['submit', 'checked', 'awarded', 'failed']
 const task_status_color = ['#895ef9fc', '#41d6ba', '#3ddf58', '#f95e85fc']
 const image_url = ref<null | string>(null)
 
 const database = new Database()
-const submission_list = reactive<SubmissionType[]>([])
-const task_list = reactive<TaskType[]>([])
+const submission_list = reactive<SubmissionListType[]>([])
+const task_list = reactive<SubmissionType[]>([])
 const submission_info = reactive<SubmissionType>({
-  user_id: database.user.id,
+  user_id: database.user?.id,
   file_id_list: [],
   file_name_list: [],
+  date: new Date(),
+  title: '',
+  message: '',
   status: 0
 })
 
-function start_loading() { is_loading_show.value = true }
-function stop_loading() { is_loading_show.value = false }
-
 async function load_data() {
-  is_loading_show.value = true
-
-  await database.findList('postgraduate-task', 'submission').then(res => {
-
+  proxy?.$loading.show()
+  await database.findList<SubmissionType>('postgraduate-task', 'submission')
+                .then((res: SubmissionType[] | null) => {
     task_list.splice(0, task_list.length)
     submission_list.splice(0, submission_list.length)
 
@@ -48,8 +48,8 @@ async function load_data() {
     task_list.sort((task1, task2) => task2.date.getTime() - task1.date.getTime())
 
     task_list.forEach(task => {
-      if (submission_list.length == 0
-          || submission_list.filter(submission => submission.id == moment(task.date).format('YY-MM-DD')).length == 0) {
+      if (submission_list.length == 0 || submission_list
+          .filter(submission => submission.id == moment(task.date).format('YY-MM-DD')).length == 0) {
 
         submission_list.push({id: moment(task.date).format('YY-MM-DD'), task_list: [task]})
       } else {
@@ -62,14 +62,14 @@ async function load_data() {
       }
     })
   }).catch(err => {
+    proxy?.$notification.show('Error', err)
     console.log(err)
   }).finally(() => {
-    is_loading_show.value = false
+    proxy?.$loading.hide()
   })
 }
 
 onBeforeMount(async () => {
-  // is_loading_show.value = true
   await load_data()
 })
 
@@ -81,20 +81,20 @@ function toggle(event: any) {
   }
 }
 
-function calNumber(info: TaskType[], v: number) {
+function calNumber(submission_list: SubmissionType[], v: number) {
   let number = 0;
-  for (let i of info) {
-    if (i.status >= v) number ++
+  for (let submission of submission_list) {
+    if (submission.status >= v) number ++
   }
   return number
 }
 
 function displayImage(imageId: ObjectId) {
-  proxy.$loading.show()
+  proxy?.$loading.show()
   image_url.value = null
-  database.getImageUrl('postgraduate-task', 'files', imageId).then(res => {
+  database.getImageUrl('postgraduate-task', 'files', imageId).then((res: string | null) => {
     image_url.value = res
-    proxy.$loading.hide()
+    proxy?.$loading.hide()
     is_image_block_show.value = true
   })
 }
@@ -102,14 +102,12 @@ function displayImage(imageId: ObjectId) {
 function display_close() {
   image_url.value = null
   is_image_block_show.value = false
-  stop_loading()
 }
 
 function submit() {
   is_submit_form_show.value = ! is_submit_form_show.value
 
   if (is_submit_form_show.value == false) {
-    console.log(submission_info)
     if (submission_info.message == null || submission_info.title == null
          || submission_info.message.trim().length == 0
          || submission_info.title.trim().length == 0) {
@@ -118,48 +116,47 @@ function submit() {
       // submit the data
       submission_info.date = new Date()
       database.addOne('postgraduate-task', 'submission', submission_info).then(() => {
-        proxy.$notification.show('Success', 'add submission successfully!')
+        proxy?.$notification.show('Success', 'add submission successfully!')
         load_data()
       })
     }
   }
 }
 
-async function delete_task(task: TaskType) {
-  let val = confirm(`is ready to delete ${task.title}!`)
+async function delete_task(submission: SubmissionType) {
+  let val = confirm(`is ready to delete ${submission.title}!`)
   if (val) {
     let token = prompt('input your delete token')
     if (token != 'delete') {
       return
     }
-    proxy.$loading.show()
+    proxy?.$loading.show()
     
-    await database.findOne('postgraduate-task', 'submission', {_id: task._id}).then(async (res) => {
-      if (res.file_id_list?.length > 0) {
-        await database.deleteMany('postgraduate-task', 'files', {_id: {$in: res.file_id_list}})
+    await database.findOne<SubmissionType>('postgraduate-task', 'submission', {_id: submission._id}).then((res: SubmissionType | null) => {
+      if (res && res.file_id_list && res.file_id_list.length > 0) {
+        database.deleteMany('postgraduate-task', 'files', {_id: {$in: res.file_id_list}})
       }
-      await database.deleteOne('postgraduate-task', 'submission', {_id: res._id})
-      load_data()
+      if (res) database.deleteOne('postgraduate-task', 'submission', {_id: res._id})
     }).finally(() => {
-      proxy.$loading.hide()
+      proxy?.$loading.hide()
     })
   } else {
-    proxy.$notification.show('Cancel', 'operate already canceled!')
+    proxy?.$notification.show('Cancel', 'operate already canceled!')
   }
 }
 
 function uploadFile(files: Array<File>) {
-  proxy.$loading.show()
+  proxy?.$loading.show()
   for (let file of files) {
     // save to backend
     database.uploadFile('postgraduate-task', 'files', file).then(res => {
-      console.log(res)
       submission_info.file_id_list?.push(res.insertedId)
       submission_info.file_name_list?.push(res.file_name)
     }).catch(err => {
       console.log(err)
+      proxy?.$notification('Error', 'upload file error, please try again later')
     }).finally(() => {
-      proxy.$loading.hide()
+      proxy?.$loading.hide()
     })
   }
 }
