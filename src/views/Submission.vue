@@ -23,6 +23,8 @@ if (proxy == null || proxy == undefined) {
 const task_status = ['submit', 'checked', 'awarded', 'failed']
 const task_status_color = ['#895ef9fc', '#41d6ba', '#3ddf58', '#f95e85fc']
 const image_url = ref<null | string>(null)
+let is_show_submission_option = ref<boolean>(false)
+let show_submission_content_number = ref<number>(0)
 
 const database = new Database()
 const submission_list = reactive<SubmissionListType[]>([])
@@ -73,12 +75,18 @@ onBeforeMount(async () => {
   await load_data()
 })
 
-function toggle(event: any) {
-  if (event.target.parentNode.nextElementSibling.style.display == 'none') {
-    event.target.parentNode.nextElementSibling.style.display = 'block'
+function toggle(index: number) {
+  if (show_submission_content_number.value == index) {
+    show_submission_content_number.value = -1
   } else {
-    event.target.parentNode.nextElementSibling.style.display = 'none'
+    show_submission_content_number.value = index
   }
+  console.log(index)
+  // if (event.target.parentNode.nextElementSibling.style.display == 'none') {
+  //   event.target.parentNode.nextElementSibling.style.display = 'block'
+  // } else {
+  //   event.target.parentNode.nextElementSibling.style.display = 'none'
+  // }
 }
 
 function calNumber(submission_list: SubmissionType[], v: number) {
@@ -165,6 +173,28 @@ function uploadFile(files: Array<File>) {
     })
   }
 }
+
+function changeStatus(task: SubmissionType, value: number) {
+  if (database.user?.id == '670a8dc865ba7090dcbfa4e3' && value < task_status.length) {
+    if (confirm(`confirm to change status to ${task_status[value]}`)) {
+      task.status = value
+      proxy?.$loading.show()
+      database.updateOne('postgraduate-task', 'submission', {_id: task._id}, {status: value}).then(() => {
+        proxy?.$notification.show('Success', 'update status successfully')
+      }).catch(err => {
+        proxy?.$notification.show('Error', err.error)
+      }).finally(() => {
+        proxy?.$loading.hide()
+      })
+    } else {
+      proxy?.$notification.show('Cancel', 'cancel operate successfully')
+    }
+  } else {
+    proxy?.$notification.show('No Permission', 'you have no permission!')
+  }
+  
+  is_show_submission_option.value = false
+}
 </script>
 
 <template>
@@ -187,7 +217,7 @@ function uploadFile(files: Array<File>) {
     <ul class="submission-content" v-if="submission_list?.length > 0">
       <li class="submission-item" v-for="(submission, index) in submission_list" :key="submission.id">
         <div class="submission-collapse-container">
-          <div class="submission-collapse" @click="toggle">{{ submission.id }}</div>
+          <div class="submission-collapse" @click="toggle(index)">{{ submission.id }}</div>
           <div class="submission-collapse-func">
             <span class="submission-collapse-func-item">Submitted: {{ calNumber(submission.task_list, 0) }}</span>
             <span class="submission-collapse-func-item">Checked: {{ calNumber(submission.task_list, 1) }}</span>
@@ -195,8 +225,9 @@ function uploadFile(files: Array<File>) {
           </div>
         </div>
         
-        <div class="submission-item-container" :style="{'display': index == 0 ? 'display' : 'none'}">
-          <div class="submission-item-container-content" v-for="(task, inner_index) in submission.task_list" :key="inner_index">
+        <div class="submission-item-container" v-if="show_submission_content_number == index">
+          <div class="submission-item-container-content"
+               v-for="(task, inner_index) in submission.task_list" :key="inner_index">
             <div class="submission-func">
               <div class="submission-title" @click="delete_task(task)">{{ task.title }}</div>
               <div class="submission-func-container">
@@ -205,10 +236,17 @@ function uploadFile(files: Array<File>) {
                                                   @click="displayImage(task.file_id_list[index])">{{ file }}</div>
                 </div>
                 <div class="submission-date">{{ moment(task.date).format('HH:mm:ss') }}</div>
-                <div :class="{'submission-status': true, 'submission-status-error': task.status == 3}"
-                    :style="{'backgroundColor': task_status_color[task.status]}">
+                <pt-button v-if="!is_show_submission_option" :class="{'submission-status': true, 'submission-status-error': task.status == 3}"
+                    :style="{'backgroundColor': task_status_color[task.status]}"
+                    @click="is_show_submission_option = true">
                   {{ task_status[task.status] }}
-                </div>
+                </pt-button>
+                <select class="submission-option" v-else :style="{'backgroundColor': task_status_color[task.status]}">
+                  <option class="submission-option-item"
+                          v-for="(option, index) in task_status"
+                          :value="index" :key="index" :selected="task.status == index"
+                          @click="changeStatus(task, index)">{{ option }}</option>
+                </select>
               </div>
             </div>
             <div class="submission-message">{{ task.message }}</div>
@@ -323,8 +361,17 @@ function uploadFile(files: Array<File>) {
               .submission-status {
                 padding: 2px 5px;
                 color: #fff;
+                font-weight: 500;
                 border-radius: 3px;
                 height: 30px;
+              }
+
+              .submission-option {
+                padding: 5px 10px;
+                border: 1px solid #eee;
+                border-radius: 5px;
+                color: #fff;
+                outline: none;
               }
             }
           }

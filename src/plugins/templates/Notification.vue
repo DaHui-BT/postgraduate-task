@@ -27,7 +27,7 @@ function close() {
 
 <style lang="scss" scoped>
 .notification {
-  position: absolute;
+  position: fixed;
   top: 60px;
   right: 5%;
   width: 330px;
