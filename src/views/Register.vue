@@ -19,6 +19,12 @@ async function register() {
       || username.value.trim().length == 0 || password.value.trim().length == 0) {
     alert('email and password must not be null')
     return
+  } else if (!/^([A-Za-z0-9_\-\.\u4e00-\u9fa5])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,8})$/.test(username.value)) {
+    alert('email format is not correct')
+    return
+  } else if (password.value.length < 6 || password.value.length > 128) {
+    alert('password length must fit > 6 and < 128')
+    return
   }
   
   proxy?.$loading.show()

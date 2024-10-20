@@ -18,6 +18,15 @@ const router = createRouter({
       }
     },
     {
+      path: '/community',
+      name: 'Community',
+      component: () => import('@/views/Community.vue'),
+      meta: {
+        showNavbar: true,
+        isNeedLogin: true
+      }
+    },
+    {
       path: '/submission',
       name: 'submission',
       component: () => import('@/views/Submission.vue'),

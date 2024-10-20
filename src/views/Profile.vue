@@ -5,11 +5,13 @@ import moment from 'moment'
 
 import Database from '@/tools/mongodb'
 import type { TaskType } from '@/types/task'
+import type { UserType } from '@/types/user'
 
 import SubmissionChart from "@/components/SubmissionChart.vue"
 import ToolTip from '@/components/Tooltip.vue'
 import TaskForm from '@/components/TaskForm.vue'
 import PtButton from '@/components/PTButton.vue'
+import UserInfoForm from '@/components/UserInfoForm.vue'
 
 
 const proxy: ComponentPublicInstance | undefined | null = getCurrentInstance()?.proxy
@@ -19,9 +21,15 @@ if (proxy == null || proxy == undefined) {
 const router = useRouter()
 const database = new Database()
 const submission_list = reactive<Array<TaskType>>([])
+let is_show_edit = ref<boolean>(false)
 let today_finished_task_number = ref<number>(0)
 let total_task_number = ref<Element | null>(null)
 let today_task_number = ref<Element | null>(null)
+let user_info = ref<UserType>({
+  username: '',
+  email: '',
+  describe: ''
+})
 
 
 onMounted(() => {
@@ -30,6 +38,23 @@ onMounted(() => {
     router.push({ path: '/login' })
     return
   }
+  database.findOne<UserType>('postgraduate-task', 'user', {_id: {$eq: database.user.id}}).then(res => {
+    if (res == null) {
+      database.addOne('postgraduate-task', 'user',
+                            {
+                              _id: database.user?.id,
+                              username: 'YaYa',
+                              email: database.user?.profile.email,
+                              describe: 'Nothing left',
+                              register_date: new Date(),
+                              update_date: new Date(),
+                              status: 0
+                            }).catch(err => {
+        proxy?.$notification.show('Error', err.error)
+      })
+    }
+    res != null && (user_info.value = res)
+  })
   proxy?.$loading.show()
   database.findList<TaskType>('postgraduate-task', 'submission', {user_id: {$eq: database.user.id}}).then((res: TaskType[] | null) => {
     submission_list.splice(0, submission_list.length)
@@ -50,6 +75,16 @@ onMounted(() => {
   })
 })
 
+function edit() {
+  is_show_edit.value = true
+}
+
+function close(info: UserType) {
+  console.log(info)
+  info && (user_info.value = info)
+  is_show_edit.value = false
+}
+
 function logout() {
   database.user?.logOut()
   localStorage.clear()
@@ -62,10 +97,14 @@ function logout() {
   <div class="profile">
     <section class="profile-header">
       <h2 class="profile-header-title">Profile</h2>
-      <pt-button class="profile-header-logout" type="warning" @click="logout">Logout</pt-button>
+      <div class="profile-header-container">
+        <pt-button class="profile-header-edit" type="primary" @click="edit">Edit</pt-button>
+        <pt-button class="profile-header-logout" type="warning" @click="logout">Logout</pt-button>
+      </div>
     </section>
     <section class="profile-info">
-      <p class="profile-info-email">{{ database.user?.profile.email }}</p>
+      <p class="profile-info-username">Username: {{ user_info?.username }}</p>
+      <p class="profile-info-email">Email: {{ user_info?.email }}</p>
       <tool-tip message="finished total task number">
         <p class="profile-info-message" ref="total_task_number">total: {{ submission_list.length }}</p>
       </tool-tip>
@@ -73,8 +112,10 @@ function logout() {
         <p class="profile-info-message" ref="today_task_number">today: {{ today_finished_task_number }}</p>
       </tool-tip>
     </section>
-
+    <blockquote class="profile-info-describe">Describe: {{ user_info.describe }}</blockquote>
+    <br>
     <task-form></task-form>
+    <user-info-form v-if="is_show_edit" @close="close" :user_info="user_info"></user-info-form>
 
     <section class="contribute">
       <submission-chart v-if="submission_list.length > 0" :submission_list="submission_list"></submission-chart>
@@ -92,6 +133,13 @@ function logout() {
   .profile-header {
     display: flex;
     justify-content: space-between;
+
+    .profile-header-container {
+      
+      .profile-header-logout {
+        margin-left: 10px;
+      }
+    }
   }
 
   .profile-info {

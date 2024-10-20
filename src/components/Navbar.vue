@@ -7,6 +7,9 @@ const router = useRouter()
 const database = new Database()
 const status = ['Login/Register', 'Profile']
 const navbar_list = reactive<Array<object>>([{
+  title: 'Community',
+  path: '/community'
+},{
   title: 'Submission',
   path: '/submission'
 }, {
@@ -25,9 +28,9 @@ const is_expand = ref<boolean>(false)
 const nav_expand = ref(null)
 
 if (database.isLogin) {
-  navbar_list.splice(2, 2)
+  navbar_list.splice(3, 2)
 } else {
-  navbar_list.splice(0, 2)
+  navbar_list.splice(0, 3)
   navbar_list.splice(2, 1)
 }
 

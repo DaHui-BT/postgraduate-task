@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onBeforeMount, reactive, ref, getCurrentInstance, type ComponentPublicInstance } from "vue"
+import { useRouter } from "vue-router"
 import moment from 'moment'
 
 import Database from '@/tools/mongodb'
@@ -16,6 +17,7 @@ import PtUpload from '@/components/PTUpload.vue'
 const is_image_block_show = ref<boolean>(false)
 const is_submit_form_show = ref<boolean>(false)
 
+const router = useRouter()
 const proxy: ComponentPublicInstance | undefined | null = getCurrentInstance()?.proxy
 if (proxy == null || proxy == undefined) {
   throw Error('Server, please try later')
@@ -27,6 +29,7 @@ let is_show_submission_option = ref<boolean>(false)
 let show_submission_content_number = ref<number>(0)
 
 const database = new Database()
+let show_user_id = ref<string | null>(database.user?.id)
 const submission_list = reactive<SubmissionListType[]>([])
 const task_list = reactive<SubmissionType[]>([])
 const submission_info = reactive<SubmissionType>({
@@ -41,7 +44,7 @@ const submission_info = reactive<SubmissionType>({
 
 async function load_data() {
   proxy?.$loading.show()
-  await database.findList<SubmissionType>('postgraduate-task', 'submission')
+  await database.findList<SubmissionType>('postgraduate-task', 'submission', {user_id: {$eq: show_user_id.value}})
                 .then((res: SubmissionType[] | null) => {
     task_list.splice(0, task_list.length)
     submission_list.splice(0, submission_list.length)
@@ -72,6 +75,12 @@ async function load_data() {
 }
 
 onBeforeMount(async () => {
+  console.log(router.currentRoute.value.query._id)
+  if (router.currentRoute.value.query._id) {
+    show_user_id.value = router.currentRoute.value.query._id.toString()
+  } else {
+    show_user_id.value = database.user?.id
+  }
   await load_data()
 })
 
