@@ -8,6 +8,7 @@ import type { UserType } from '@/types/user'
 
 import Database from '@/tools/mongodb'
 import PtButton from '@/components/PTButton.vue'
+import type { TaskType } from '@/types/task'
 
 
 const proxy: ComponentPublicInstance | undefined | null = getCurrentInstance()?.proxy
@@ -22,7 +23,7 @@ proxy.$loading.show()
 database.findList<Array<UserType>>('postgraduate-task', 'user').then(async (res: Array<UserType> | null) => {
   user_list.splice(0, user_list.length)
   if (res) {
-    for (let user of res) {  
+    for (let user of res) {
       await database.count('postgraduate-task', 'submission', {user_id: {$eq: user._id}}).then(res => {
         user.total_finish_task_num = res
       })
@@ -36,6 +37,10 @@ database.findList<Array<UserType>>('postgraduate-task', 'user').then(async (res:
         }
       }).then((res: number) => {
         user.today_finish_task_num = res
+      })
+
+      await database.findOne<TaskType>('postgraduate-task', 'task', {user_id: {$eq: user._id}}).then(res => {
+        res && (user.task_list = res.task_list)
       })
 
       user_list.push(user)
@@ -86,6 +91,16 @@ function showDescribe(user_id: string) {
             <td class="community-user-table-title">Describe</td>
             <td colspan="3">{{ user.describe }}</td>
           </tr>
+
+          <tr class="community-user-table-task">
+            <td class="community-user-table-title">Task</td>
+            <td colspan="3" class="community-user-table-task-container">
+              <li v-for="task in user.task_list" :key="task.name">
+                <span class="community-user-table-task-name">{{ task.name }}: </span>
+                {{ task.describe }}
+                </li>
+            </td>
+          </tr>
         </table>
         <pt-button class="community-user-table-button" width="100%" @click="showDescribe(user._id)">Read More</pt-button>
       </div>
@@ -118,6 +133,16 @@ function showDescribe(user_id: string) {
 
         .community-user-table-title {
           font-weight: 500;
+        }
+
+        .community-user-table-task {
+
+          .community-user-table-task-container {
+
+            .community-user-table-task-name {
+              color: #999;
+            }
+          }
         }
       }
     }
