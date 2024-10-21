@@ -90,12 +90,6 @@ function toggle(index: number) {
   } else {
     show_submission_content_number.value = index
   }
-  console.log(index)
-  // if (event.target.parentNode.nextElementSibling.style.display == 'none') {
-  //   event.target.parentNode.nextElementSibling.style.display = 'block'
-  // } else {
-  //   event.target.parentNode.nextElementSibling.style.display = 'none'
-  // }
 }
 
 function calNumber(submission_list: SubmissionType[], v: number) {
@@ -217,7 +211,7 @@ function changeStatus(task: SubmissionType, value: number) {
       <form-table @close="() => is_submit_form_show = false" @submit="submit">
         <template #form>
           <pt-input placeholder="title" v-model="submission_info.title"></pt-input>
-          <pt-upload @on-change="uploadFile" accept=".png, .jpg, .jpeg"></pt-upload>
+          <pt-upload @on-change="uploadFile" accept=".png, .jpg, .jpeg" :uploaded_files="submission_info.file_name_list"></pt-upload>
           <pt-input placeholder="message" v-model="submission_info.message"></pt-input>
         </template>
       </form-table>

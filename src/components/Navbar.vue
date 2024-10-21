@@ -6,7 +6,7 @@ import Database from '@/tools/mongodb'
 const router = useRouter()
 const database = new Database()
 const status = ['Login/Register', 'Profile']
-const navbar_list = reactive<Array<object>>([{
+const navbar_list = reactive<Array<{title: string, path: string}>>([{
   title: 'Community',
   path: '/community'
 },{
@@ -66,13 +66,13 @@ function expand() {
         <div class="nav-item" ref="nav_expand" @click="expand()">〇</div>
         <ul class="nav-collpase-container" v-if="is_expand">
           <li class="nav-collpase-container-item"
-              v-for="item in navbar_list" :key="item"
+              v-for="item in navbar_list" :key="item.title"
               @click="to(item.path)">{{ item.title }}</li>
         </ul>
       </div>
       <div class="right-bar" v-else>
         <li class="nav-item"
-        v-for="item in navbar_list" :key="item"
+        v-for="item in navbar_list" :key="item.title"
         @click="to(item.path)">{{ item.title }}</li>
       </div>
     </div>
@@ -116,6 +116,7 @@ function expand() {
         padding: 10px 20px;
         background-color: #fff;
         border: 1px solid #eee;
+        z-index: 2;
 
         .nav-collpase-container-item {
           cursor: pointer;

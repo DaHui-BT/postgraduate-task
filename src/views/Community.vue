@@ -1,10 +1,13 @@
 <script lang="ts" setup>
-import { getCurrentInstance, type ComponentPublicInstance } from 'vue'
-import Database from '@/tools/mongodb'
-import type { UserType } from '@/types/user'
-import moment from 'moment'
 import { reactive } from 'vue'
 import { useRouter } from 'vue-router'
+import { getCurrentInstance, type ComponentPublicInstance } from 'vue'
+import moment from 'moment'
+
+import type { UserType } from '@/types/user'
+
+import Database from '@/tools/mongodb'
+import PtButton from '@/components/PTButton.vue'
 
 
 const proxy: ComponentPublicInstance | undefined | null = getCurrentInstance()?.proxy
@@ -16,11 +19,28 @@ const database = new Database()
 const user_list = reactive<UserType[]>([])
 
 proxy.$loading.show()
-database.findList<UserType[]>('postgraduate-task', 'user').then((res) => {
-  console.log(res)
+database.findList<Array<UserType>>('postgraduate-task', 'user').then(async (res: Array<UserType> | null) => {
   user_list.splice(0, user_list.length)
-  res && user_list.push(...res)
-  console.log(res)
+  if (res) {
+    for (let user of res) {  
+      await database.count('postgraduate-task', 'submission', {user_id: {$eq: user._id}}).then(res => {
+        user.total_finish_task_num = res
+      })
+      
+      await database.count('postgraduate-task', 'submission', {
+        date: {
+          $gte: new Date(moment().format('YYYY-MM-DD'))
+        },
+        user_id: {
+          $eq: user._id
+        }
+      }).then((res: number) => {
+        user.today_finish_task_num = res
+      })
+
+      user_list.push(user)
+    }
+  }
 }).finally(() => {
   proxy.$loading.hide()
 })
@@ -37,8 +57,9 @@ function showDescribe(user_id: string) {
 
 <template>
   <div class="community">
+    <h2 class="community">Community</h2>
     <div class="community-user-container">
-      <div class="community-user-item" v-for="user in user_list" :key="user._id" @click="showDescribe(user._id)">
+      <div class="community-user-item" v-for="user in user_list" :key="user._id">
         <table class="community-user-table">
           <tr class="community-user-table-info">
             <td class="community-user-table-title">Username</td>
@@ -56,9 +77,9 @@ function showDescribe(user_id: string) {
           
           <tr class="community-user-table-status">
             <td class="community-user-table-title">Total Finishing Tasks</td>
-            <td>100</td>
+            <td>{{ user.total_finish_task_num }}</td>
             <td class="community-user-table-title">Today Finishing Tasks</td>
-            <td>10</td>
+            <td>{{ user.today_finish_task_num }}</td>
           </tr>
 
           <tr class="community-user-table-describe">
@@ -66,6 +87,7 @@ function showDescribe(user_id: string) {
             <td colspan="3">{{ user.describe }}</td>
           </tr>
         </table>
+        <pt-button class="community-user-table-button" width="100%" @click="showDescribe(user._id)">Read More</pt-button>
       </div>
     </div>
   </div>
@@ -80,7 +102,7 @@ function showDescribe(user_id: string) {
       padding: 20px;
       border-radius: 10px;
       box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-      margin-top: 50px;
+      margin-top: 30px;
 
       .community-user-table {
         width: 100%;
@@ -91,6 +113,7 @@ function showDescribe(user_id: string) {
           padding: 3px 5px;
           border: 1px solid #eee;
           text-align: justify;
+          word-break: break-word;
         }
 
         .community-user-table-title {

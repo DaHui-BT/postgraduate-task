@@ -103,8 +103,8 @@ function logout() {
       </div>
     </section>
     <section class="profile-info">
-      <p class="profile-info-username">Username: {{ user_info?.username }}</p>
-      <p class="profile-info-email">Email: {{ user_info?.email }}</p>
+      <p class="profile-info-username"><span class="profile-info-title">Username:</span> {{ user_info?.username }}</p>
+      <p class="profile-info-email"><span class="profile-info-title">Email:</span> {{ user_info?.email }}</p>
       <tool-tip message="finished total task number">
         <p class="profile-info-message" ref="total_task_number">total: {{ submission_list.length }}</p>
       </tool-tip>
@@ -144,7 +144,12 @@ function logout() {
 
   .profile-info {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
+
+    .profile-info-title {
+      color: #999;
+    }
 
     .profile-info-message {
       display: inline-block;

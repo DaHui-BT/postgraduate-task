@@ -40,26 +40,28 @@ function hideTip() {
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .hover-tip-container {
   position: relative;
   display: inline-block;
+  z-index: 1;
+  
+  .hover-tip-message {
+    position: absolute;
+    bottom: 100%;
+    left: 100%;
+    transform: translateX(-90%);
+    padding: 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+    // z-index: 1;
+    margin-bottom: 8px;
+    font-size: 12px;
+    // opacity: 0;
+    // animation: fadeIn 0.2s forwards;
+  }
 }
 
-.hover-tip-message {
-  position: absolute;
-  bottom: 100%;
-  left: 100%;
-  transform: translateX(-90%);
-  padding: 8px;
-  border-radius: 4px;
-  white-space: nowrap;
-  z-index: 10;
-  margin-bottom: 8px;
-  font-size: 12px;
-  opacity: 0;
-  animation: fadeIn 0.2s forwards;
-}
 
 @keyframes fadeIn {
   to {

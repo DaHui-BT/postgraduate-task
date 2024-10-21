@@ -15,12 +15,16 @@ defineProps({
   plain: {
     type: Boolean,
     default: false
+  },
+  width: {
+    type: String,
+    default: 'inherit'
   }
 })
 </script>
 
 <template>
-  <button :class="['pt-button', type, {'circle': circle, [type + '-plain']: plain}]">
+  <button :class="['pt-button', type, {'circle': circle, [type + '-plain']: plain}]" :style="{'width': width}">
     <slot></slot>
   </button>
 </template>
